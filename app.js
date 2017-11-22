@@ -79,7 +79,7 @@ app.get('/messengerwebhook/', function (req, res) {
  * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
  *
  */
-app.post('/webhook/', function (req, res) {
+app.post('/messengerwebhook/', function (req, res) {
 	var data = req.body;
 	console.log(JSON.stringify(data));
 
