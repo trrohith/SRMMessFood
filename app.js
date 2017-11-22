@@ -183,6 +183,7 @@ function handleEcho(messageId, appId, metadata) {
 }
 
 function handleApiAiAction(sender, action, responseText, contexts, parameters) {
+	sendTextMessage(sender, "HEY");
 	switch (action) {
 		default:
 			//unhandled action, just send back the text
