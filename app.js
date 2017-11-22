@@ -62,7 +62,7 @@ app.get('/', function (req, res) {
 })
 
 // for Facebook verification
-app.get('/webhook/', function (req, res) {
+app.get('/messengerwebhook/', function (req, res) {
 	console.log("request");
 	if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === config.FB_VERIFY_TOKEN) {
 		res.status(200).send(req.query['hub.challenge']);
@@ -79,7 +79,7 @@ app.get('/webhook/', function (req, res) {
  * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
  *
  */
-app.post('/webhook/', function (req, res) {
+app.post('/messengerwebhook/', function (req, res) {
 	var data = req.body;
 	console.log(JSON.stringify(data));
 
@@ -183,7 +183,6 @@ function handleEcho(messageId, appId, metadata) {
 }
 
 function handleApiAiAction(sender, action, responseText, contexts, parameters) {
-	sendTextMessage(sender, "HEY");
 	switch (action) {
 		default:
 			//unhandled action, just send back the text
