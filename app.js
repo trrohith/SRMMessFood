@@ -62,7 +62,7 @@ app.get('/', function (req, res) {
 })
 
 // for Facebook verification
-app.get('/messengerwebhook/', function (req, res) {
+app.get('/webhook/', function (req, res) {
 	console.log("request");
 	if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === config.FB_VERIFY_TOKEN) {
 		res.status(200).send(req.query['hub.challenge']);
@@ -79,7 +79,7 @@ app.get('/messengerwebhook/', function (req, res) {
  * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
  *
  */
-app.post('/messengerwebhook/', function (req, res) {
+app.post('/webhook/', function (req, res) {
 	var data = req.body;
 	console.log(JSON.stringify(data));
 
