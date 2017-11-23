@@ -335,7 +335,14 @@ function handleApiAiResponse(sender, response) {
 				"subtitle": element.description,
 				"buttons": {
 					"type": "postback",
-					"payload": element.title
+					"payload": element.title,
+					"buttons": [
+					 {
+					   "title": element.title,
+					   "type": "postback",
+					   "payload": element.title            
+					 }
+				   ]  
 				}
 			};
 			replies.push(reply);
@@ -558,45 +565,7 @@ function sendListMessage(recipientId, elements) {
 		message: {
 			attachment: {
 				type: "template",
-				payload: {
-					"template_type": "list",
-					"top_element_style": "compact",
-					"elements": [
-					  {
-						"title": "Classic T-Shirt Collection",
-						"subtitle": "See all our colors",
-						"buttons": [
-						 {
-						   "title": "View More",
-						   "type": "postback",
-						   "payload": "payload"            
-						 }
-					   ]  
-					  },
-					  {
-						"title": "Classic White T-Shirt",
-						"subtitle": "See all our colors",
-						"buttons": [
-						 {
-						   "title": "View More",
-						   "type": "postback",
-						   "payload": "payload"            
-						 }
-					   ]  
-					  },
-					  {
-						"title": "Classic Blue T-Shirt",
-						"subtitle": "100% Cotton, 200% Comfortable"  ,
-						"buttons": [
-						 {
-						   "title": "View More",
-						   "type": "postback",
-						   "payload": "payload"            
-						 }
-					   ]       
-					  }
-					]
-				  }
+				payload: elements
 			}
 		}
 	};
