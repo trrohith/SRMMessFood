@@ -125,7 +125,6 @@ app.post('/googlewebhook/', function (req, res) {
 			res.send(JSON.stringify({ "speech": response, "displayText": response }));
 		});
 	}
-	res.send(JSON.stringify({ "speech": "List Heading", "contextOut": [{ "name": "_actions_on_google_", "lifespan": 100 }], "data": { "google": { "expectUserResponse": true, "noInputPrompts": [], "isSsml": false, "systemIntent": { "intent": "actions.intent.OPTION", "data": { "@type": "type.googleapis.com/google.actions.v2.OptionValueSpec", "listSelect": { "title": "Main Title", "items": [{ "optionInfo": { "key": "KEY_1" }, "title": "Title 1", "description": "Description 1" }, { "optionInfo": { "key": "KEY_2" }, "title": "Title 2", "description": "Description 2" }] } } } } } }));
 })
 
 // for Facebook verification
