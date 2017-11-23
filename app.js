@@ -81,6 +81,7 @@ app.get('/googlewebhook/', function (req, res) {
 })
 app.post('/googlewebhook/', function (req, res) {
 	var params = req.body.result.parameters;
+	var action = req.body.result.action;
 	res.setHeader('Content-Type', 'application/json');
 	var messName = "Sannasi";
 	var DateWanted = params['date-time'];
@@ -89,7 +90,12 @@ app.post('/googlewebhook/', function (req, res) {
 		DateWanted = req.body.timestamp;
 	}
 	var date = new Date(DateWanted.substring(0, 10));
-	if (mealType == '') {
+	if(action=='MEAL_LIST'){		
+		console.log(req);
+		var response = 'You got into a list response';
+		res.send(JSON.stringify({ "speech": response, "displayText": response }));
+	}
+	else if (mealType == '') {
 		admin.database().ref('/Menu/' + messName + '/' + date.getDay()).once('value').then(function (snapshot) {
 			var currently = snapshot.val();
 			console.log(currently);
