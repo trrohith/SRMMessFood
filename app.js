@@ -86,8 +86,6 @@ app.post('/googlewebhook/', function (req, res) {
 		DateWanted = req.body.timestamp;
 	}
 	var date = new Date(DateWanted.substring(0, 10));
-	date = addMinutes(date, 330);
-	var additionalData = '';
 	if (params.mealType == '') {
 		admin.database().ref('/Menu/' + messName + '/' + date.getDay()).once('value').then(function (snapshot) {
 			var currently = snapshot.val();
