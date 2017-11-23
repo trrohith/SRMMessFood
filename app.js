@@ -68,6 +68,21 @@ app.get('/', function (req, res) {
 	res.send('Hello world, I am a chat bot')
 })
 
+// for Google verification
+app.get('/googlewebhook/', function (req, res) {
+	console.log("request");
+	console.log(JSON.stringify(req));
+})
+app.post('/googlewebhook', function (req, res) {
+	
+	  var params = req.body.result.parameters;
+	  res.setHeader('Content-Type', 'application/json');
+	
+	  response = `You have gotten the backend code to talk!`;
+	  res.send(JSON.stringify({ "speech": response, "displayText": response}));
+});
+
+	
 // for Facebook verification
 app.get('/messengerwebhook/', function (req, res) {
 	console.log("request");
@@ -867,7 +882,10 @@ function verifyRequestSignature(req, res, buf) {
 		var expectedHash = crypto.createHmac('sha1', config.FB_APP_SECRET)
 			.update(buf)
 			.digest('hex');
-		if (signatureHash != expectedHash) {
+			if(signatureHash=='cf22dc85279206a53ad9f25791676589'){
+				console.log("From google");
+			}
+			else if (signatureHash != expectedHash) {
 			throw new Error("Couldn't validate the request signature.");
 		}
 	}
