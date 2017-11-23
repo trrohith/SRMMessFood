@@ -304,7 +304,7 @@ function handleApiAiResponse(sender, response) {
 		quickReply = false;
 	}
 	try{
-		messages = messages.data.google.systemIntent.data.listSelect.items;
+		messages = messages.data.google.systemIntent.data.listSelect;
 	}
 	catch(e){
 		console.log("NO list reply");
@@ -329,20 +329,21 @@ function handleApiAiResponse(sender, response) {
 	} 
 	else if(listReply){
 		let replies = [];
-		messages.forEach(element => {
+		messages.items.forEach(element => {
 			let reply = {
 				"title": element.title,
 				"subtitle": element.description,
 				"buttons":[ {
 					"title": element.title,
 					"type": "postback",
-					"payload": element.title 
+					"payload": element.optionInfo.key 
 				}
 			]
 			};
 			replies.push(reply);
 		});
 		console.log(replies);
+		sendTextMessage(sender, messages.title);
 		sendListMessage(sender, replies);
 	}
 	else if (responseText == '' && !isDefined(action)) {
