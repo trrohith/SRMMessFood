@@ -80,6 +80,7 @@ app.post('/googlewebhook', function (req, res) {
 	
 	  var response = `You have gotten the backend code to talk!`;
 	  res.send(JSON.stringify({ "speech": response, "displayText": response}));
+	  res.send(JSON.stringify({ "speech": response, "displayText": response}));
 });
 
 	
