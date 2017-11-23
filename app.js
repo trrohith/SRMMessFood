@@ -89,7 +89,7 @@ app.get('/messengerwebhook/', function (req, res) {
 app.post('/messengerwebhook/', function (req, res) {
 	var data = req.body;
 	console.log(JSON.stringify(data));
-	var date = new Date("23-11-2017");
+	var date = new Date("2017-11-23");
 	var messName="Sannasi";
 	var mealType = "breakfast";
 	var referenceValue='/Menu/' + messName + '/' + date.getDay() + '/' + mealType;
