@@ -127,7 +127,7 @@ app.post('/googlewebhook/', function (req, res) {
 	else if (validMess(messName)) {
 		admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
 			var currently = snapshot.val().value;
-			var response = `In ${messName} for ${dayOfWeekAsString(date.getDay())} there is ${currently}`;
+			var response = `In ${messName} for ${dayOfWeekAsString(date.getDay())} ${mealType} there is ${currently}`;
 			res.send(JSON.stringify({ "speech": response, "displayText": response }));
 		});
 	}
