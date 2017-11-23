@@ -91,6 +91,7 @@ app.post('/messengerwebhook/', function (req, res) {
 	console.log(JSON.stringify(data));
 	var date = new Date("23-11-2017");
 	var messName="Sannasi";
+	var mealType = "breakfast";
 	admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
 		currently = snapshot.val().value;
 		console.log(currently);
