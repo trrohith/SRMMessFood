@@ -94,46 +94,48 @@ app.post('/googlewebhook/', function (req, res) {
 	date = addMinutes(date, 330);
 	if (messName == '') {
 		var refPath = referencePathMessPreference(req);
-		console.log(refPath);
-		var messData;
-		admin.database().ref(refPath).once('value').then(function (snapshot) {
-			messData = snapshot.val();
-			if (messData) {
-				console.log(messData);
-				messName = snapshot.val().mess;
-				console.log('Mess: ' + messName);
-			} else {
-				saveMessName(refPath + `/mess`, '');
-			}
-			if (validMess(messName)) {
-				admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
-					particularDayMenu(messName, date, function(resultValue){
-						res.send(resultValue);
-					});
+		getMessName(refPath, function(resultValue){
+			if(validMess(resultValue)){
+				retrieveMenuOptions(action, mealType, messName, date, function(toSendValue){
+					res.send(toSendValue);
 				});
 			}
-			else {
-				//Ask for valid mess
+			else{
+				//ask for mess name
 			}
 		});
 	}
-	else if (action == 'MEAL_LIST') {
+	else{
+		if(validMess(resultValue)){
+			retrieveMenuOptions(action, mealType, messName, date, function(toSendValue){
+				res.send(toSendValue);
+			});
+		}
+		else{
+			//ask for mess name
+		}
+	}
+	
+})
+
+function retrieveMenuOptions(action, mealType, messName, date, callback){
+	if (action == 'MEAL_LIST') {
 		var response = 'You got into a list response';
-		console.log(req.body.result);
-		res.send(JSON.stringify({ "speech": response, "displayText": response }));
+		callback(JSON.stringify({ "speech": response, "displayText": response }));
 	}
 	else if (mealType == '') {
-		res.send(particularDayMenu(messName, date));
+		particularDayMenu(messName, date, function(resultValue){
+			callback(resultValue);
+		});;
 	}
 	else if (validMess(messName)) {
 		admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
 			var currently = snapshot.val().value;
 			var response = `In ${messName} for ${dayOfWeekAsString(date.getDay())} ${mealType} there is ${currently}`;
-			res.send(JSON.stringify({ "speech": response, "displayText": response }));
+			callback(JSON.stringify({ "speech": response, "displayText": response }));
 		});
 	}
-})
-
+}
 // for Facebook verification
 app.get('/messengerwebhook/', function (req, res) {
 	console.log("request");
@@ -220,6 +222,22 @@ function referencePathMessPreference(request) {
 	}
 }
 
+function getMessName(refPath, callback){
+	console.log(refPath);
+	var messData;
+	admin.database().ref(refPath).once('value').then(function (snapshot) {
+		messData = snapshot.val();
+		if (messData) {
+			console.log(messData);
+			messName = snapshot.val().mess;
+			console.log('Mess: ' + messName);
+			callback(messName);
+		} else {
+			saveMessName(refPath + `/mess`, '');
+			callback('');
+		}
+	});
+}
 function saveMessName(refPath, valueToSave) {
 	admin.database().ref(refPath).set(valueToSave)
 		.then(snapshot => {
