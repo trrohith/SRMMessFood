@@ -93,6 +93,7 @@ app.post('/googlewebhook/', function (req, res) {
 	var date = new Date(DateWanted.substring(0, 10));
 	if(action=='MEAL_LIST'){
 		var response = 'You got into a list response';
+		console.log(req.body.result);
 		res.send(JSON.stringify({ "speech": response, "displayText": response }));
 	}
 	else if (mealType == '') {
@@ -109,7 +110,7 @@ app.post('/googlewebhook/', function (req, res) {
 							"intent": "actions.intent.OPTION", "data": {
 								"@type": "type.googleapis.com/google.actions.v2.OptionValueSpec",
 								"listSelect": {
-									"title": "Meals served",
+									"title": "Meals served on " + dayOfWeekAsString(date.getDay()),
 									"items": [{ "optionInfo": { "key": "Breakfast" }, "title": "Breakfast", "description": BreakfastContents },
 									{ "optionInfo": { "key": "Lunch" }, "title": "Lunch", "description": LunchContents },
 									{ "optionInfo": { "key": "Snacks" }, "title": "Snacks", "description": SnacksContents },
