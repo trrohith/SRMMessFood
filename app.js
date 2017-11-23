@@ -562,7 +562,7 @@ function sendListMessage(recipientId, elements) {
 				payload: {
 					"template_type": "list",
 					"top_element_style": "compact",
-					elements: elements
+					"elements": elements
 				}
 			}
 		}
