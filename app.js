@@ -94,6 +94,7 @@ app.post('/googlewebhook/', function (req, res) {
 	if(action=='MEAL_LIST'){
 		var response = 'You got into a list response';
 		console.log(req.body.result);
+		console.log(req.body.result.contexts);
 		res.send(JSON.stringify({ "speech": response, "displayText": response }));
 	}
 	else if (mealType == '') {
