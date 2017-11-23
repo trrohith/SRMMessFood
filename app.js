@@ -48,8 +48,19 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 
 
+var admin = require("firebase-admin");
 
+var serviceAccount = require("keys/srmmessfood-firebase-key.json");
 
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "ttps://srmmessfood.firebaseio.com/"
+});
+
+firebase.initializeApp(config);
+
+  // Get a reference to the database service
+var database = firebase.database();
 const apiAiService = apiai(config.API_AI_CLIENT_ACCESS_TOKEN, {
 	language: "en",
 	requestSource: "fb"
@@ -82,8 +93,12 @@ app.get('/messengerwebhook/', function (req, res) {
 app.post('/messengerwebhook/', function (req, res) {
 	var data = req.body;
 	console.log(JSON.stringify(data));
-
-
+	var date = new Date("23-11-2017");
+	var messName="Sannasi";
+	admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
+		currently = snapshot.val().value;
+		console.log(currently);
+		});
 
 	// Make sure this is a page subscription
 	if (data.object == 'page') {
