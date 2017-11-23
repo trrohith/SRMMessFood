@@ -69,6 +69,8 @@ app.get('/', function (req, res) {
 })
 //Google pattern for suggestion chips
 //{"speech":"Speech","contextOut":[{"name":"_actions_on_google_","lifespan":100,"parameters":{}}],"data":{"google":{"expectUserResponse":true,"noInputPrompts":[],"richResponse":{"items":[{"simpleResponse":{"textToSpeech":"Speech"}}],"suggestions":[{"title":"Option 1"},{"title":"Option 2"}]}}}}
+//Google pattern for list carousel
+//{"speech":"List Heading","contextOut":[{"name":"_actions_on_google_","lifespan":100}],"data":{"google":{"expectUserResponse":true,"noInputPrompts":[],"isSsml":false,"systemIntent":{"intent":"actions.intent.OPTION","data":{"@type":"type.googleapis.com/google.actions.v2.OptionValueSpec","listSelect":{"title":"Main Title","items":[{"optionInfo":{"key":"KEY_1"},"title":"Title 1","description":"Description 1"},{"optionInfo":{"key":"KEY_2"},"title":"Title 2","description":"Description 2"}]}}}}}}
 // for Google verification
 app.get('/googlewebhook/', function (req, res) {
 	console.log("request");
@@ -78,7 +80,7 @@ app.post('/googlewebhook/', function (req, res){
 	var params = req.body.result.parameters;
 	res.setHeader('Content-Type', 'application/json');
   
-	res.send(JSON.stringify({"speech":"Alright! Here are a few things you can learn. Which sounds interesting?","contextOut":[{"name":"_actions_on_google_","lifespan":100}],"data":{"google":{"expectUserResponse":true,"noInputPrompts":[],"isSsml":false,"systemIntent":{"intent":"actions.intent.OPTION","data":{"@type":"type.googleapis.com/google.actions.v2.OptionValueSpec","listSelect":{"title":"Things to learn about","items":[{"optionInfo":{"key":"MATH_AND_PRIME"},"title":"Math & prime numbers","description":"42 is an abundant number because the sum of its proper divisors 54 is greater…","image":{"url":"http://example.com/math_and_prime.jpg","accessibilityText":"Math & prime numbers"}},{"optionInfo":{"key":"EGYPT"},"title":"Ancient Egyptian religion","description":"42 gods who ruled on the fate of the dead in the afterworld. Throughout the under…","image":{"url":"http://example.com/egypt","accessibilityText":"Egypt"}},{"optionInfo":{"key":"RECIPES"},"title":"42 recipes with 42 ingredients","description":"Here's a beautifully simple recipe that's full of flavor! All you need is some ginger and…","image":{"url":"http://example.com/recipe","accessibilityText":"Recipe"}}]}}}}}}));
+	res.send(JSON.stringify({"speech":"Speech","contextOut":[{"name":"_actions_on_google_","lifespan":100,"parameters":{}}],"data":{"google":{"expectUserResponse":true,"noInputPrompts":[],"richResponse":{"items":[{"simpleResponse":{"textToSpeech":"Speech"}}],"suggestions":[{"title":"Option 1"},{"title":"Option 2"}]}}}}));
 })
 
 // for Facebook verification
