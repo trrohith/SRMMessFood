@@ -107,7 +107,9 @@ app.post('/googlewebhook/', function (req, res) {
 			}
 			if (validMess(messName)) {
 				admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
-					res.send(particularDayMenu(messName, date));
+					particularDayMenu(messName, date, function(resultValue){
+						res.send(resultValue);
+					});
 				});
 			}
 			else {
@@ -224,15 +226,15 @@ function saveMessName(refPath, valueToSave) {
 		});
 }
 
-function particularDayMenu(messName, date){
+function particularDayMenu(messName, date, callback){
 	admin.database().ref('/Menu/' + messName + '/' + date.getDay()).once('value').then(function (snapshot) {
 		var currently = snapshot.val();
 		var BreakfastContents = currently.breakfast.value;
 		var LunchContents = currently.lunch.value;
 		var SnacksContents = currently.snacks.value;
 		var DinnerContents = currently.dinner.value;
-		return (JSON.stringify({
-			"speech": "Click to know more in detail", "contextOut": [{ "name": "_actions_on_google_", "lifespan": 100 }], "data": {
+		callback(JSON.stringify({
+			"speech": "Click to know more in detail", "contextOut": [{ "name": "_actions_on_google_", "lifespan": 1 }], "data": {
 				"google": {
 					"expectUserResponse": true, "noInputPrompts": [], "isSsml": false, "systemIntent": {
 						"intent": "actions.intent.OPTION", "data": {
