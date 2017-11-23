@@ -70,8 +70,7 @@ app.get('/', function (req, res) {
 // for Google verification
 app.get('/googlewebhook/', function (req, res) {
 	console.log("request");
-	console.log(JSON.stringify(req.body));
-	console.log(JSON.stringify(res.body));
+	console.log(JSON.stringify(req.query));
 	/*if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === config.FB_VERIFY_TOKEN) {
 		res.status(200).send(req.query['hub.challenge']);
 	} else {
@@ -91,6 +90,7 @@ app.post('/googlewebhook/', function (req, res) {
 // for Facebook verification
 app.get('/messengerwebhook/', function (req, res) {
 	console.log("request");
+	console.log(JSON.stringify(req));
 	if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === config.FB_VERIFY_TOKEN) {
 		res.status(200).send(req.query['hub.challenge']);
 	} else {
