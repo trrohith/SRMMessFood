@@ -82,9 +82,14 @@ app.post('/googlewebhook', function (req, res) {
 	
 	  var response = `You have gotten the backend code to talk!`;
 	  const GoogleApp = new App({ req, res});
-	  GoogleApp.tell(response);
+	  let actionMap = new Map();
+	  actionMap.set('EXACT_MEAL', getExactMeal);
+	  app.handleRequest(actionMap);
 });
 
+function getExactMeal(GoogleApp){
+	GoogleApp.tell("Gotcha");
+}
 	
 // for Facebook verification
 app.get('/messengerwebhook/', function (req, res) {
