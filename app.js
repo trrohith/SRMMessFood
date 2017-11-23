@@ -211,7 +211,7 @@ function receivedMessage(event) {
 		sessionIds.set(senderID, uuid.v1());
 	}
 	//console.log("Received message for user %d and page %d at %d with message:", senderID, recipientID, timeOfMessage);
-	console.log(JSON.stringify(event));
+	//console.log(JSON.stringify(event));
 
 	var isEcho = message.is_echo;
 	var messageId = message.mid;
@@ -839,8 +839,7 @@ function receivedPostback(event) {
 
 	switch (payload) {
 		default:
-			//unindentified payload
-			sendTextMessage(senderID, "I'm not sure what you want. Can you be more specific?");
+			sendToApiAi(senderID, payload);
 			break;
 
 	}
