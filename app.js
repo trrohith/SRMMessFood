@@ -79,8 +79,7 @@ app.get('/googlewebhook/', function (req, res) {
 	console.log("request");
 	console.log(JSON.stringify(req));
 })
-app.post('/googlewebhook/', function (req, res) {		
-	console.log(req);
+app.post('/googlewebhook/', function (req, res) {	
 	var params = req.body.result.parameters;
 	var action = req.body.result.action;
 	res.setHeader('Content-Type', 'application/json');
