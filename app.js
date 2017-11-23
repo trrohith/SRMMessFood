@@ -76,11 +76,11 @@ app.get('/googlewebhook/', function (req, res) {
 	console.log("request");
 	console.log(JSON.stringify(req));
 })
-app.post('/googlewebhook/', function (req, res){
+app.post('/googlewebhook/', function (req, res) {
 	var params = req.body.result.parameters;
 	res.setHeader('Content-Type', 'application/json');
-  
-	res.send(JSON.stringify({"speech":"Speech","contextOut":[{"name":"_actions_on_google_","lifespan":100,"parameters":{}}],"data":{"google":{"expectUserResponse":true,"noInputPrompts":[],"richResponse":{"items":[{"simpleResponse":{"textToSpeech":"Speech"}}],"suggestions":[{"title":"Option 1"},{"title":"Option 2"}]}}}}));
+
+	res.send(JSON.stringify({ "speech": "Speech", "contextOut": [{ "name": "_actions_on_google_", "lifespan": 100, "parameters": {} }], "data": { "google": { "expectUserResponse": true, "noInputPrompts": [], "richResponse": { "items": [{ "simpleResponse": { "textToSpeech": "Speech" } }], "suggestions": [{ "title": "Option 1" }, { "title": "Option 2" }] } } } }));
 })
 
 // for Facebook verification
@@ -291,10 +291,7 @@ function handleApiAiResponse(sender, response) {
 	console.log(JSON.stringify(response));
 	let responseText = response.result.fulfillment.speech;
 	let responseData = response.result.fulfillment.data;
-	let messages=[];
-	if(isDefined(response.result.fulfillment.data.google.richResponse.suggestions)){
-	messages = response.result.fulfillment.data.google.richResponse.suggestions;
-	}
+	let messages = response.result.fulfillment.data.google.richResponse.suggestions;
 	let action = response.result.action;
 	let contexts = response.result.contexts;
 	let parameters = response.result.parameters;
@@ -302,18 +299,20 @@ function handleApiAiResponse(sender, response) {
 	sendTypingOff(sender);
 
 	if (isDefined(messages) && (messages.length > 1)) {
-		let replies = [];
-		messages.forEach(element => {
-			let reply =
-			{
-				"content_type": "text",
-				"title": element.title,
-				"payload": element.title
-			}
-			replies.push(reply);
-		});
-		console.log(replies);
-		sendQuickReply(sender, responseText, replies);
+		if (isDefined(messages.data.google.richResponse.suggestions)) {
+			let replies = [];
+			messages.forEach(element => {
+				let reply =
+					{
+						"content_type": "text",
+						"title": element.title,
+						"payload": element.title
+					}
+				replies.push(reply);
+			});
+			console.log(replies);
+			sendQuickReply(sender, responseText, replies);
+		}
 	} else if (responseText == '' && !isDefined(action)) {
 		//api ai could not evaluate input.
 		console.log('Unknown query' + response.result.resolvedQuery);
@@ -855,10 +854,10 @@ function verifyRequestSignature(req, res, buf) {
 		var expectedHash = crypto.createHmac('sha1', config.FB_APP_SECRET)
 			.update(buf)
 			.digest('hex');
-			if(signatureHash=='cf22dc85279206a53ad9f25791676589'){
-				console.log("From google");
-			}
-			else if (signatureHash != expectedHash) {
+		if (signatureHash == 'cf22dc85279206a53ad9f25791676589') {
+			console.log("From google");
+		}
+		else if (signatureHash != expectedHash) {
 			throw new Error("Couldn't validate the request signature.");
 		}
 	}
