@@ -205,21 +205,6 @@ function handleEcho(messageId, appId, metadata) {
 
 function handleApiAiAction(sender, action, responseText, contexts, parameters) {
 	switch (action) {
-
-		case 'EXACT_MEAL':
-			var data = parameters;
-			console.log(JSON.stringify(data));
-			var date = new Date("2017-11-23");
-			var messName = "Sannasi";
-			var mealType = data.mealType;
-			var referenceValue = '/Menu/' + messName + '/' + date.getDay() + '/' + mealType;
-			console.log(referenceValue);
-			admin.database().ref(referenceValue).once('value').then(function (snapshot) {
-				var currently = snapshot.val().value;
-				console.log(currently);
-				sendTextMessage(sender, currently);
-			});
-			break;
 		default:
 			//unhandled action, just send back the text
 			sendTextMessage(sender, responseText);
