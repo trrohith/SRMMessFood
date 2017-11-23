@@ -80,6 +80,7 @@ app.get('/googlewebhook/', function (req, res) {
 	console.log(JSON.stringify(req));
 })
 app.post('/googlewebhook/', function (req, res) {	
+	console.log(req.body);
 	var params = req.body.result.parameters;
 	var action = req.body.result.action;
 	res.setHeader('Content-Type', 'application/json');
@@ -97,7 +98,6 @@ app.post('/googlewebhook/', function (req, res) {
 	else if (mealType == '') {
 		admin.database().ref('/Menu/' + messName + '/' + date.getDay()).once('value').then(function (snapshot) {
 			var currently = snapshot.val();
-			console.log(currently);
 			var BreakfastContents = currently.breakfast.value;
 			var LunchContents = currently.lunch.value;
 			var SnacksContents = currently.snacks.value;
@@ -365,7 +365,6 @@ function handleApiAiResponse(sender, response) {
 		console.log("NO list reply");
 		listReply = false;
 	}
-	console.log(JSON.stringify(messages));
 	sendTypingOff(sender);
 
 	if (quickReply) {
@@ -379,7 +378,6 @@ function handleApiAiResponse(sender, response) {
 				}
 			replies.push(reply);
 		});
-		console.log(replies);
 		sendQuickReply(sender, responseText, replies);
 	}
 	else if (listReply) {
