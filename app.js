@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const app = express();
 const uuid = require('uuid');
+const App = require('actions-on-google').DialogflowApp;
+var functions = require('firebase-functions');
 
 
 // Messenger API parameters
@@ -68,35 +70,107 @@ app.get('/', function (req, res) {
 	res.send('Hello world, I am a chat bot')
 })
 
-// for Google verification
-app.get('/googlewebhook/', function (req, res) {
-	console.log("request");
-	console.log(JSON.stringify(req));
-})
-app.post('/googlewebhook', function (req, res) {
-	
-	  var params = req.body.result.parameters;
-	  var response = `You have gotten the backend code to talk!`;
-	  res.setHeader('Content-Type', 'application/json');
-	  res.send(JSON.stringify({ "speech": response, "displayText": response,
-		"basicCard": {
-			"title": "Math & prime numbers",
-			"formattedText": "42 is an even composite number. It\n    is composed of three distinct prime numbers multiplied together. It\n    has a total of eight divisors. 42 is an abundant number, because the\n    sum of its proper divisors 54 is greater than itself. To count from\n    1 to 42 would take you about twenty-one…",
-			"image": {
-				"url": "https://example.google.com/42.png",
-				"accessibilityText": "Image alternate text"
-			},
-			"buttons": [
-				{
-					"title": "Read more",
-					"openUrlAction": {
-						"url": "https://example.google.com/mathandprimes"
-					}
-				}
-			]
-		}
-	}));
-});
+exports.mealFinder = functions.https.onRequest((request, response) => {
+	const app = new App({ request, response });
+	console.log('Request headers: ' + JSON.stringify(request.headers));
+	console.log('Request body: ' + JSON.stringify(request.body));
+  
+	function getExactMeal(app) {
+	  var mealType = request.body.result.parameters['mealType'];
+	  var DateWanted = '';
+	  var currently = '';
+	  messName = request.body.result.parameters['messName'];
+	  console.log("INSIDE messName " + messName);
+	  DateWanted = request.body.result.parameters['date-time'];
+	  if (DateWanted == '') {
+		DateWanted = request.body.timestamp;
+	  }
+	  var date = new Date(DateWanted.substring(0, 10));
+	  date = addMinutes(date, 330);
+	  var additionalData = '';
+	  var sourceOfCall = request.body.originalRequest.source;
+	  if (validMess(messName)) {
+		admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
+		  currently = snapshot.val().value;
+		  app.tell("In " + messName + " for " + dayOfWeekAsString(date.getDay()) + " " + mealType + " there is " + currently);
+		});
+	  }
+	  else if (messName == '') {
+		var refPath = referencePath(sourceOfCall);
+		console.log(refPath);
+		var messData;
+		admin.database().ref(refPath).once('value').then(function (snapshot) {
+		  messData = snapshot.val();
+		  if (messData) {
+			console.log(messData);
+			messName = snapshot.val().mess;
+			console.log('Mess: ' + messName);
+		  } else {
+			saveMessName(refPath + `/mess`, '');
+		  }
+		  if (validMess(messName)) {
+			admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
+			  currently = snapshot.val().value;
+			  app.tell("In " + messName + " for " + dayOfWeekAsString(date.getDay()) + " " + mealType + " there is " + currently);
+			});
+		  }
+		  else {
+			app.ask(app.buildRichResponse()
+			  .addSimpleResponse({ speech: 'Which mess would you like to know about?\n Sannasi, PF, UG, PG' })
+			  .addSuggestions(messNamesArray)
+			);
+		  }
+		});
+	  }
+	  else {
+		app.ask(app.buildRichResponse()
+		  .addSimpleResponse({ speech: 'Which mess would you like to know about?\n Sannasi, PF, UG, PG' })
+		  .addSuggestions(messNamesArray)
+		);
+	  }
+  
+	}
+  
+	function dayOfWeekAsString(dayIndex) {
+	  return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][dayIndex];
+	}
+  
+	function validMess(searchStr) {
+	  return (messNamesArray.indexOf(searchStr) > -1)
+	}
+  
+	function addMinutes(date, minutes) {
+	  return new Date(date.getTime() + minutes * 60000);
+	}
+  
+	function saveMessName(refPath, valueToSave) {
+	  admin.database().ref(refPath).set(valueToSave)
+		.then(snapshot => {
+		});
+	}
+  
+	function referencePath(sourceOfCall) {
+	  if (sourceOfCall == 'facebook') {
+		var userID = request.body.originalRequest.data.sender.id;
+		return (`/user/facebook/${userID}/preferences`);
+	  }
+	  else if (sourceOfCall == 'google') {
+		var userID = request.body.originalRequest.data.user.userId;
+		return (`/user/google/${userID}/preferences`);
+	  }
+	}
+	function setMess(app) {
+	  messName = request.body.result.parameters['messName'];
+	  var sourceOfCall = request.body.originalRequest.source;
+	  var refPath = referencePath(sourceOfCall);
+	  saveMessName(refPath + `/mess`, messName);
+	  app.tell('Alright I\'ve saved your preferred mess to be ' + messName);
+	}
+	let actionMap = new Map();
+	actionMap.set('EXACT_MEAL', getExactMeal);
+	actionMap.set('SET_MESS', setMess);  
+	app.handleRequest(actionMap);
+  });
 	
 // for Facebook verification
 app.get('/messengerwebhook/', function (req, res) {
