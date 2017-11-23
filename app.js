@@ -79,7 +79,15 @@ app.get('/googlewebhook/', function (req, res) {
 app.post('/googlewebhook/', function (req, res) {
 	var params = req.body.result.parameters;
 	res.setHeader('Content-Type', 'application/json');
-
+	if(params.mealType==''){
+		res.send(JSON.stringify({"speech":"Click to know more in detail","contextOut":[{"name":"_actions_on_google_","lifespan":100}],"data":{"google":{"expectUserResponse":true,"noInputPrompts":[],"isSsml":false,"systemIntent":{"intent":"actions.intent.OPTION","data":{"@type":"type.googleapis.com/google.actions.v2.OptionValueSpec",
+		"listSelect":{"title":"Meals served",
+		"items":[{"optionInfo":{"key":"Breakfast"},"title":"Breakfast","description":"Will pull details"},
+		{"optionInfo":{"key":"Lunch"},"title":"Lunch","description":"Will pull details"},
+		{"optionInfo":{"key":"Snacks"},"title":"Snacks","description":"Will pull details"},
+		{"optionInfo":{"key":"Dinner"},"title":"Dinner","description":"Will pull details"}
+	]}}}}}}));
+	}
 	res.send(JSON.stringify({"speech":"List Heading","contextOut":[{"name":"_actions_on_google_","lifespan":100}],"data":{"google":{"expectUserResponse":true,"noInputPrompts":[],"isSsml":false,"systemIntent":{"intent":"actions.intent.OPTION","data":{"@type":"type.googleapis.com/google.actions.v2.OptionValueSpec","listSelect":{"title":"Main Title","items":[{"optionInfo":{"key":"KEY_1"},"title":"Title 1","description":"Description 1"},{"optionInfo":{"key":"KEY_2"},"title":"Title 2","description":"Description 2"}]}}}}}}));
 })
 
