@@ -79,7 +79,8 @@ app.get('/googlewebhook/', function (req, res) {
 	console.log("request");
 	console.log(JSON.stringify(req));
 })
-app.post('/googlewebhook/', function (req, res) {
+app.post('/googlewebhook/', function (req, res) {		
+	console.log(req);
 	var params = req.body.result.parameters;
 	var action = req.body.result.action;
 	res.setHeader('Content-Type', 'application/json');
@@ -90,8 +91,7 @@ app.post('/googlewebhook/', function (req, res) {
 		DateWanted = req.body.timestamp;
 	}
 	var date = new Date(DateWanted.substring(0, 10));
-	if(action=='MEAL_LIST'){		
-		console.log(req);
+	if(action=='MEAL_LIST'){
 		var response = 'You got into a list response';
 		res.send(JSON.stringify({ "speech": response, "displayText": response }));
 	}
