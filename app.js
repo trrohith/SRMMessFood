@@ -80,7 +80,7 @@ app.post('/googlewebhook/', function (req, res) {
 	var params = req.body.result.parameters;
 	res.setHeader('Content-Type', 'application/json');
 
-	res.send(JSON.stringify({ "speech": "Speech", "contextOut": [{ "name": "_actions_on_google_", "lifespan": 100, "parameters": {} }], "data": { "google": { "expectUserResponse": true, "noInputPrompts": [], "richResponse": { "items": [{ "simpleResponse": { "textToSpeech": "Speech" } }], "suggestions": [{ "title": "Option 1" }, { "title": "Option 2" }] } } } }));
+	res.send(JSON.stringify({"speech":"List Heading","contextOut":[{"name":"_actions_on_google_","lifespan":100}],"data":{"google":{"expectUserResponse":true,"noInputPrompts":[],"isSsml":false,"systemIntent":{"intent":"actions.intent.OPTION","data":{"@type":"type.googleapis.com/google.actions.v2.OptionValueSpec","listSelect":{"title":"Main Title","items":[{"optionInfo":{"key":"KEY_1"},"title":"Title 1","description":"Description 1"},{"optionInfo":{"key":"KEY_2"},"title":"Title 2","description":"Description 2"}]}}}}}}));
 })
 
 // for Facebook verification
