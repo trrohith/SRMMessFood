@@ -97,6 +97,7 @@ app.post('/googlewebhook/', function (req, res) {
 		getMessName(refPath, function(resultValue){
 			console.log(resultValue);
 			if(validMess(resultValue)){
+				messName = resultValue;
 				retrieveMenuOptions(action, mealType, messName, date, function(toSendValue){
 					console.log(toSendValue);
 					res.send(toSendValue);
