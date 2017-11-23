@@ -906,7 +906,7 @@ function verifyRequestSignature(req, res, buf) {
 		var elements = signature.split('=');
 		var method = elements[0];
 		var signatureHash = elements[1];
-
+		console.log(signatureHash);
 		var expectedHash = crypto.createHmac('sha1', config.FB_APP_SECRET)
 			.update(buf)
 			.digest('hex');
