@@ -286,6 +286,7 @@ function handleCardMessages(messages, sender) {
 
 
 function handleApiAiResponse(sender, response) {
+	console.log(JSON.stringify(response));
 	let responseText = response.result.fulfillment.speech;
 	let responseData = response.result.fulfillment.data;
 	let messages = response.result.fulfillment.messages;
