@@ -71,12 +71,7 @@ app.get('/', function (req, res) {
 app.get('/googlewebhook/', function (req, res) {
 	console.log("request");
 	console.log(JSON.stringify(req.query));
-	/*if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === config.FB_VERIFY_TOKEN) {
-		res.status(200).send(req.query['hub.challenge']);
-	} else {
-		console.error("Failed validation. Make sure the validation tokens match.");
-		res.sendStatus(403);
-	}*/
+	res.status(200).send(req.query['hub.challenge']);
 })
 
 app.post('/googlewebhook/', function (req, res) {
@@ -906,7 +901,6 @@ function verifyRequestSignature(req, res, buf) {
 		var elements = signature.split('=');
 		var method = elements[0];
 		var signatureHash = elements[1];
-		console.log(signatureHash);
 		var expectedHash = crypto.createHmac('sha1', config.FB_APP_SECRET)
 			.update(buf)
 			.digest('hex');
