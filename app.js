@@ -295,15 +295,25 @@ function handleApiAiResponse(sender, response) {
 	let action = response.result.action;
 	let contexts = response.result.contexts;
 	let parameters = response.result.parameters;
+	var quickReply = true;
+	var listReply = true;
 	try{
 		messages = messages.data.google.richResponse.suggestions;
 	}catch(e){
 		console.log("NO quick reply");
+		quickReply = false;
+	}
+	try{
+		messages = messages.data.google.listSelect.items;
+	}
+	catch(e){
+		console.log("NO list reply");
+		listReply = false;
 	}
 	console.log(JSON.stringify(messages));
 	sendTypingOff(sender);
 
-	if (isDefined(messages)&& messages.length>1) {
+	if (quickReply) {
 			let replies = [];
 			messages.forEach(element => {
 				let reply =
@@ -316,7 +326,25 @@ function handleApiAiResponse(sender, response) {
 			});
 			console.log(replies);
 			sendQuickReply(sender, responseText, replies);
-	} else if (responseText == '' && !isDefined(action)) {
+	} 
+	else if(listReply){
+		let replies = [];
+		messages.forEach(element => {
+			let reply = {
+				"title": element.title,
+				"subtitle": element.description,
+				"buttons": {
+					"type": "postback",
+					"title": element.title,
+					"payload": element.title
+				}
+			};
+			replies.push(reply);
+		});
+		console.log(replies);
+		sendGenericMessage(sender, replies);
+	}
+	else if (responseText == '' && !isDefined(action)) {
 		//api ai could not evaluate input.
 		console.log('Unknown query' + response.result.resolvedQuery);
 		sendTextMessage(sender, "I'm not sure what you want. Can you be more specific?");
