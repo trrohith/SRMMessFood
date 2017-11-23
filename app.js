@@ -8,8 +8,6 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const app = express();
 const uuid = require('uuid');
-const App = require('actions-on-google').DialogflowApp;
-var functions = require('firebase-functions');
 
 
 // Messenger API parameters
