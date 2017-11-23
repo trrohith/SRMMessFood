@@ -67,23 +67,6 @@ const sessionIds = new Map();
 app.get('/', function (req, res) {
 	res.send('Hello world, I am a chat bot')
 })
-<<<<<<< HEAD
-// for Google verification
-app.get('/googlewebhook/', function (req, res) {
-	console.log("request");
-	console.log(JSON.stringify(req.query));
-	res.status(200).send(req.query['hub.challenge']);
-})
-
-app.post('/googlewebhook/', function (req, res) {
-	
-		var data = req.body;
-		console.log(JSON.stringify(data));
-		res.sendStatus(200);
-	});
-
-=======
->>>>>>> parent of d373028... Google Test
 
 // for Facebook verification
 app.get('/messengerwebhook/', function (req, res) {
@@ -884,11 +867,7 @@ function verifyRequestSignature(req, res, buf) {
 		var expectedHash = crypto.createHmac('sha1', config.FB_APP_SECRET)
 			.update(buf)
 			.digest('hex');
-
-		if(signatureHash=='cf22dc85279206a53ad9f25791676589'){
-			console.log("From google");
-		}
-		else if (signatureHash != expectedHash) {
+		if (signatureHash != expectedHash) {
 			throw new Error("Couldn't validate the request signature.");
 		}
 	}
