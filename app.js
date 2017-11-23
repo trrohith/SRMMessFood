@@ -121,6 +121,12 @@ app.post('/googlewebhook/', function (req, res) {
 							}
 						}
 					}
+				},
+				"followupEvent": {
+					"data": {
+						"date-time": date.getDate
+					},
+					"name": "Exact_Meal"
 				}
 			}));
 		});
