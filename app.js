@@ -342,7 +342,7 @@ function handleApiAiResponse(sender, response) {
 			replies.push(reply);
 		});
 		console.log(replies);
-		sendGenericMessage(sender, replies);
+		sendListMessage(sender, replies);
 	}
 	else if (responseText == '' && !isDefined(action)) {
 		//api ai could not evaluate input.
@@ -542,6 +542,26 @@ function sendGenericMessage(recipientId, elements) {
 				type: "template",
 				payload: {
 					template_type: "generic",
+					elements: elements
+				}
+			}
+		}
+	};
+
+	callSendAPI(messageData);
+}
+
+function sendListMessage(recipientId, elements) {
+	var messageData = {
+		recipient: {
+			id: recipientId
+		},
+		message: {
+			attachment: {
+				type: "template",
+				payload: {
+					"template_type": "list",
+					"top_element_style": "compact",
 					elements: elements
 				}
 			}
