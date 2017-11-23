@@ -80,7 +80,24 @@ app.post('/googlewebhook', function (req, res) {
 	  var params = req.body.result.parameters;
 	  var response = `You have gotten the backend code to talk!`;
 	  res.setHeader('Content-Type', 'application/json');
-	  res.send(JSON.stringify({ "speech": response, "displayText": response}));
+	  res.send(JSON.stringify({ "speech": response, "displayText": response},{
+		"basicCard": {
+			"title": "Math & prime numbers",
+			"formattedText": "42 is an even composite number. It\n    is composed of three distinct prime numbers multiplied together. It\n    has a total of eight divisors. 42 is an abundant number, because the\n    sum of its proper divisors 54 is greater than itself. To count from\n    1 to 42 would take you about twenty-one…",
+			"image": {
+				"url": "https://example.google.com/42.png",
+				"accessibilityText": "Image alternate text"
+			},
+			"buttons": [
+				{
+					"title": "Read more",
+					"openUrlAction": {
+						"url": "https://example.google.com/mathandprimes"
+					}
+				}
+			]
+		}
+	}));
 });
 	
 // for Facebook verification
