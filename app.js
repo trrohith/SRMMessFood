@@ -335,7 +335,6 @@ function handleApiAiResponse(sender, response) {
 				"subtitle": element.description,
 				"buttons": {
 					"type": "postback",
-					"title": element.title,
 					"payload": element.title
 				}
 			};
