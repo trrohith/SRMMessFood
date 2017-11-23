@@ -564,39 +564,15 @@ function sendListMessage(recipientId, elements) {
 					"elements": [
 					  {
 						"title": "Classic T-Shirt Collection",
-						"subtitle": "See all our colors", 
-						"buttons": [
-						  {
-							"title": "View More",
-							"type": "postback",
-							"payload": "payload"               
-						  }
-						]
+						"subtitle": "See all our colors"
 					  },
 					  {
 						"title": "Classic White T-Shirt",
-						"subtitle": "See all our colors",
-						"default_action": {
-							"title": "View More",
-							"type": "postback",
-							"payload": "payload"      
-						}
+						"subtitle": "See all our colors"
 					  },
 					  {
 						"title": "Classic Blue T-Shirt",
-						"subtitle": "100% Cotton, 200% Comfortable",
-						"default_action": {
-							"title": "View More",
-							"type": "postback",
-							"payload": "payload"      
-						},
-						"buttons": [
-						  {
-							"title": "View More",
-							"type": "postback",
-							"payload": "payload"              
-						  }
-						]        
+						"subtitle": "100% Cotton, 200% Comfortable"       
 					  }
 					],
 					 "buttons": [
