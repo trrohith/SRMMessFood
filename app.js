@@ -333,17 +333,12 @@ function handleApiAiResponse(sender, response) {
 			let reply = {
 				"title": element.title,
 				"subtitle": element.description,
-				"buttons": {
+				"buttons":[ {
+					"title": element.title,
 					"type": "postback",
-					"payload": element.title,
-					"buttons": [
-					 {
-					   "title": element.title,
-					   "type": "postback",
-					   "payload": element.title            
-					 }
-				   ]  
+					"payload": element.title 
 				}
+			]
 			};
 			replies.push(reply);
 		});
