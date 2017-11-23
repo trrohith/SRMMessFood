@@ -121,12 +121,14 @@ app.post('/googlewebhook/', function (req, res) {
 })
 
 function retrieveMenuOptions(action, mealType, messName, date, callback){
+	console.log("Retrieve "+mealType);
 	if (action == 'MEAL_LIST') {
 		var response = 'You got into a list response';
 		callback(JSON.stringify({ "speech": response, "displayText": response }));
 	}
 	else if (mealType == '') {
 		particularDayMenu(messName, date, function(resultValue){
+			console.log(resultValue);
 			callback(resultValue);
 		});
 	}
@@ -248,6 +250,7 @@ function saveMessName(refPath, valueToSave) {
 }
 
 function particularDayMenu(messName, date, callback){
+	console.log("DAY Menu "+messName);
 	admin.database().ref('/Menu/' + messName + '/' + date.getDay()).once('value').then(function (snapshot) {
 		var currently = snapshot.val();
 		var BreakfastContents = currently.breakfast.value;
