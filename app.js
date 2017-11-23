@@ -78,13 +78,11 @@ app.get('/googlewebhook/', function (req, res) {
 app.post('/googlewebhook', function (req, res) {
 	
 	  var params = req.body.result.parameters;
-	  res.setHeader('Content-Type', 'application/json');
-	
 	  var response = `You have gotten the backend code to talk!`;
 	  const GoogleApp = new App({ req, res});
 	  let actionMap = new Map();
 	  actionMap.set('EXACT_MEAL', getExactMeal);
-	  app.handleRequest(actionMap);
+	  GoogleApp.handleRequest(actionMap);
 });
 
 function getExactMeal(GoogleApp){
