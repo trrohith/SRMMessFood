@@ -67,6 +67,26 @@ const sessionIds = new Map();
 app.get('/', function (req, res) {
 	res.send('Hello world, I am a chat bot')
 })
+// for Google verification
+app.get('/googlewebhook/', function (req, res) {
+	console.log("request");
+	console.log(JSON.stringify(req));
+	console.log(JSON.stringify(res));
+	/*if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === config.FB_VERIFY_TOKEN) {
+		res.status(200).send(req.query['hub.challenge']);
+	} else {
+		console.error("Failed validation. Make sure the validation tokens match.");
+		res.sendStatus(403);
+	}*/
+})
+
+app.post('/googlewebhook/', function (req, res) {
+	
+		var data = req.body;
+		console.log(JSON.stringify(data));
+		res.sendStatus(200);
+	});
+
 
 // for Facebook verification
 app.get('/messengerwebhook/', function (req, res) {
