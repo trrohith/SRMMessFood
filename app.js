@@ -81,6 +81,7 @@ app.get('/googlewebhook/', function (req, res) {
 app.post('/googlewebhook/', function (req, res) {
 	var params = req.body.result.parameters;
 	res.setHeader('Content-Type', 'application/json');
+	var messName = "Sannasi";
 	var DateWanted = params['date-time'];
 	if (DateWanted == '') {
 		DateWanted = req.body.timestamp;
