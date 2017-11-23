@@ -201,6 +201,7 @@ function handleApiAiAction(sender, action, responseText, contexts, parameters) {
 			admin.database().ref(referenceValue).once('value').then(function (snapshot) {
 				var currently = snapshot.val().value;
 				console.log(currently);
+				sendTextMessage(sender, currently);
 			});
 			break;
 		default:
