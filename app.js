@@ -50,7 +50,7 @@ app.use(bodyParser.json())
 
 var admin = require("firebase-admin");
 
-var serviceAccount = require("keys/srmmessfood-firebase-key.json");
+var serviceAccount = require("srmmessfood-firebase-key.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
