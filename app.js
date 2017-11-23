@@ -67,6 +67,19 @@ const sessionIds = new Map();
 app.get('/', function (req, res) {
 	res.send('Hello world, I am a chat bot')
 })
+
+// for Google verification
+app.get('/googlewebhook/', function (req, res) {
+	console.log("request");
+	console.log(JSON.stringify(req));
+})
+app.post('/googlewebhook/', function (req, res){
+	var params = req.body.result.parameters;
+	res.setHeader('Content-Type', 'application/json');
+  
+	res.send(JSON.stringify({"speech":"Which mess would you like to know about?\n Sannasi, PF, UG, PG","contextOut":[{"name":"_actions_on_google_","lifespan":100,"parameters":{}}],"data":{"google":{"expectUserResponse":true,"noInputPrompts":[],"richResponse":{"items":[{"simpleResponse":{"textToSpeech":"Which mess would you like to know about?\n Sannasi, PF, UG, PG"}}],"suggestions":[{"title":"Sannasi"},{"title":"PF"},{"title":"UG"},{"title":"PG"}]},"userStorage":"{\"data\":{}}"}}}));
+})
+
 // for Facebook verification
 app.get('/messengerwebhook/', function (req, res) {
 	console.log("request");
