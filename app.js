@@ -67,6 +67,8 @@ const sessionIds = new Map();
 app.get('/', function (req, res) {
 	res.send('Hello world, I am a chat bot')
 })
+//Google pattern for normal speech
+//{ "speech": response, "displayText": response}
 //Google pattern for suggestion chips
 //{"speech":"Speech","contextOut":[{"name":"_actions_on_google_","lifespan":100,"parameters":{}}],"data":{"google":{"expectUserResponse":true,"noInputPrompts":[],"richResponse":{"items":[{"simpleResponse":{"textToSpeech":"Speech"}}],"suggestions":[{"title":"Option 1"},{"title":"Option 2"}]}}}}
 //Google pattern for list carousel
@@ -79,16 +81,50 @@ app.get('/googlewebhook/', function (req, res) {
 app.post('/googlewebhook/', function (req, res) {
 	var params = req.body.result.parameters;
 	res.setHeader('Content-Type', 'application/json');
-	if(params.mealType==''){
-		res.send(JSON.stringify({"speech":"Click to know more in detail","contextOut":[{"name":"_actions_on_google_","lifespan":100}],"data":{"google":{"expectUserResponse":true,"noInputPrompts":[],"isSsml":false,"systemIntent":{"intent":"actions.intent.OPTION","data":{"@type":"type.googleapis.com/google.actions.v2.OptionValueSpec",
-		"listSelect":{"title":"Meals served",
-		"items":[{"optionInfo":{"key":"Breakfast"},"title":"Breakfast","description":"Will pull details"},
-		{"optionInfo":{"key":"Lunch"},"title":"Lunch","description":"Will pull details"},
-		{"optionInfo":{"key":"Snacks"},"title":"Snacks","description":"Will pull details"},
-		{"optionInfo":{"key":"Dinner"},"title":"Dinner","description":"Will pull details"}
-	]}}}}}}));
+	DateWanted = params['date-time'];
+	if (DateWanted == '') {
+		DateWanted = req.body.timestamp;
 	}
-	res.send(JSON.stringify({"speech":"List Heading","contextOut":[{"name":"_actions_on_google_","lifespan":100}],"data":{"google":{"expectUserResponse":true,"noInputPrompts":[],"isSsml":false,"systemIntent":{"intent":"actions.intent.OPTION","data":{"@type":"type.googleapis.com/google.actions.v2.OptionValueSpec","listSelect":{"title":"Main Title","items":[{"optionInfo":{"key":"KEY_1"},"title":"Title 1","description":"Description 1"},{"optionInfo":{"key":"KEY_2"},"title":"Title 2","description":"Description 2"}]}}}}}}));
+	var date = new Date(DateWanted.substring(0, 10));
+	date = addMinutes(date, 330);
+	var additionalData = '';
+	if (params.mealType == '') {
+		admin.database().ref('/Menu/' + messName + '/' + date.getDay()).once('value').then(function (snapshot) {
+			var currently = snapshot.val();
+			console.log(currently);
+			var BreakfastContents = currently.breakfast.value;
+			var LunchContents = currently.lunch.value;
+			var SnacksContents = currently.snacks.value;
+			var DinnerContents = currently.dinner.value;
+			res.send(JSON.stringify({
+				"speech": "Click to know more in detail", "contextOut": [{ "name": "_actions_on_google_", "lifespan": 100 }], "data": {
+					"google": {
+						"expectUserResponse": true, "noInputPrompts": [], "isSsml": false, "systemIntent": {
+							"intent": "actions.intent.OPTION", "data": {
+								"@type": "type.googleapis.com/google.actions.v2.OptionValueSpec",
+								"listSelect": {
+									"title": "Meals served",
+									"items": [{ "optionInfo": { "key": "Breakfast" }, "title": "Breakfast", "description": BreakfastContents },
+									{ "optionInfo": { "key": "Lunch" }, "title": "Lunch", "description": LunchContents },
+									{ "optionInfo": { "key": "Snacks" }, "title": "Snacks", "description": SnacksContents },
+									{ "optionInfo": { "key": "Dinner" }, "title": "Dinner", "description": DinnerContents }
+									]
+								}
+							}
+						}
+					}
+				}
+			}));
+		});
+	}
+	else if (validMess(messName)) {
+		admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
+			var currently = snapshot.val().value;
+			var response = `In ${messName} for ${dayOfWeekAsString(date.getDay())} there is ${currently}`;
+			res.send(JSON.stringify({ "speech": response, "displayText": response }));
+		});
+	}
+	res.send(JSON.stringify({ "speech": "List Heading", "contextOut": [{ "name": "_actions_on_google_", "lifespan": 100 }], "data": { "google": { "expectUserResponse": true, "noInputPrompts": [], "isSsml": false, "systemIntent": { "intent": "actions.intent.OPTION", "data": { "@type": "type.googleapis.com/google.actions.v2.OptionValueSpec", "listSelect": { "title": "Main Title", "items": [{ "optionInfo": { "key": "KEY_1" }, "title": "Title 1", "description": "Description 1" }, { "optionInfo": { "key": "KEY_2" }, "title": "Title 2", "description": "Description 2" }] } } } } } }));
 })
 
 // for Facebook verification
@@ -149,7 +185,13 @@ app.post('/messengerwebhook/', function (req, res) {
 });
 
 
+function dayOfWeekAsString(dayIndex) {
+	return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][dayIndex];
+}
 
+function validMess(searchStr) {
+	return (messNamesArray.indexOf(searchStr) > -1)
+}
 
 
 function receivedMessage(event) {
@@ -305,16 +347,16 @@ function handleApiAiResponse(sender, response) {
 	let parameters = response.result.parameters;
 	var quickReply = true;
 	var listReply = true;
-	try{
+	try {
 		messages = messages.data.google.richResponse.suggestions;
-	}catch(e){
+	} catch (e) {
 		console.log("NO quick reply");
 		quickReply = false;
 	}
-	try{
+	try {
 		messages = messages.data.google.systemIntent.data.listSelect;
 	}
-	catch(e){
+	catch (e) {
 		console.log("NO list reply");
 		listReply = false;
 	}
@@ -322,31 +364,31 @@ function handleApiAiResponse(sender, response) {
 	sendTypingOff(sender);
 
 	if (quickReply) {
-			let replies = [];
-			messages.forEach(element => {
-				let reply =
-					{
-						"content_type": "text",
-						"title": element.title,
-						"payload": element.title
-					}
-				replies.push(reply);
-			});
-			console.log(replies);
-			sendQuickReply(sender, responseText, replies);
-	} 
-	else if(listReply){
+		let replies = [];
+		messages.forEach(element => {
+			let reply =
+				{
+					"content_type": "text",
+					"title": element.title,
+					"payload": element.title
+				}
+			replies.push(reply);
+		});
+		console.log(replies);
+		sendQuickReply(sender, responseText, replies);
+	}
+	else if (listReply) {
 		let replies = [];
 		messages.items.forEach(element => {
 			let reply = {
 				"title": element.title,
 				"subtitle": element.description,
-				"buttons":[ {
+				"buttons": [{
 					"title": element.title,
 					"type": "postback",
-					"payload": element.optionInfo.key 
+					"payload": element.optionInfo.key
 				}
-			]
+				]
 			};
 			replies.push(reply);
 		});
@@ -573,7 +615,7 @@ function sendListMessage(recipientId, elements) {
 					"template_type": "list",
 					"top_element_style": "compact",
 					"elements": elements
-				  }
+				}
 			}
 		}
 	};
