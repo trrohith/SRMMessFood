@@ -295,11 +295,15 @@ function handleApiAiResponse(sender, response) {
 	let action = response.result.action;
 	let contexts = response.result.contexts;
 	let parameters = response.result.parameters;
+	try{
+		let messages = messages.data.google.richResponse.suggestions;
+	}catch(e){
+		console.log("NO quick reply");
+	}
 	console.log(JSON.stringify(messages));
 	sendTypingOff(sender);
 
-	if (isDefined(messages)) {
-		if (isDefined(messages.data.google.richResponse.suggestions)) {
+	if (isDefined(messages)&& messages.length>1) {
 			let replies = [];
 			messages.forEach(element => {
 				let reply =
@@ -312,7 +316,6 @@ function handleApiAiResponse(sender, response) {
 			});
 			console.log(replies);
 			sendQuickReply(sender, responseText, replies);
-		}
 	} else if (responseText == '' && !isDefined(action)) {
 		//api ai could not evaluate input.
 		console.log('Unknown query' + response.result.resolvedQuery);
