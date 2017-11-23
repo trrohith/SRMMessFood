@@ -79,19 +79,43 @@ app.get('/googlewebhook/', function (req, res) {
 	console.log("request");
 	console.log(JSON.stringify(req));
 })
-app.post('/googlewebhook/', function (req, res) {	
+app.post('/googlewebhook/', function (req, res) {
 	console.log(req.body);
 	var params = req.body.result.parameters;
 	var action = req.body.result.action;
 	res.setHeader('Content-Type', 'application/json');
-	var messName = "Sannasi";
+	var messName = params.messName;
 	var DateWanted = params['date-time'];
 	var mealType = params.mealType;
 	if (DateWanted == '') {
 		DateWanted = req.body.timestamp;
 	}
 	var date = new Date(DateWanted.substring(0, 10));
-	if(action=='MEAL_LIST'){
+	date = addMinutes(date, 330);
+	if (messName == '') {
+		var refPath = referencePath(req);
+		console.log(refPath);
+		var messData;
+		admin.database().ref(refPath).once('value').then(function (snapshot) {
+			messData = snapshot.val();
+			if (messData) {
+				console.log(messData);
+				messName = snapshot.val().mess;
+				console.log('Mess: ' + messName);
+			} else {
+				saveMessName(refPath + `/mess`, '');
+			}
+			/*if (validMess(messName)) {
+				admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
+					currently = snapshot.val().value;
+				});
+			}
+			else {
+				//Ask for valid mess
+			}*/
+		});
+	}
+	if (action == 'MEAL_LIST') {
 		var response = 'You got into a list response';
 		console.log(req.body.result);
 		res.send(JSON.stringify({ "speech": response, "displayText": response }));
@@ -198,8 +222,32 @@ function dayOfWeekAsString(dayIndex) {
 function validMess(searchStr) {
 	return (messNamesArray.indexOf(searchStr) > -1)
 }
+function addMinutes(date, minutes) {
+	return new Date(date.getTime() + minutes * 60000);
+}
 
+function referencePathMessPreference(request) {
+	try {
+		var userID = request.body.originalRequest.data.user.userId;
+		return (`/users/google/${userID}/preferences`);
+	}
+	catch (e) {
 
+	}
+	try {
+		var userID = request.body.sessionId;
+		return (`/users/facebook/${userID}/preferences`);
+	}
+	catch (e) {
+
+	}
+}
+
+function saveMessName(refPath, valueToSave) {
+	admin.database().ref(refPath).set(valueToSave)
+		.then(snapshot => {
+		});
+}
 function receivedMessage(event) {
 
 	var senderID = event.sender.id;
