@@ -79,6 +79,7 @@ app.post('/googlewebhook', function (req, res) {
 	
 	  var params = req.body.result.parameters;
 	  var response = `You have gotten the backend code to talk!`;
+	  res.setHeader('Content-Type', 'application/json');
 	  var GoogleApp = new App({ req, res});
 	  GoogleApp.ask("How are you?");
 });
