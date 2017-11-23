@@ -291,7 +291,7 @@ function handleApiAiResponse(sender, response) {
 	console.log(JSON.stringify(response));
 	let responseText = response.result.fulfillment.speech;
 	let responseData = response.result.fulfillment.data;
-	let messages = response.result.fulfillment.data.google.suggestions[0];
+	let messages = response.result.fulfillment.data.google.richResponse.suggestions[0];
 	let action = response.result.action;
 	let contexts = response.result.contexts;
 	let parameters = response.result.parameters;
