@@ -70,6 +70,8 @@ app.get('/', function (req, res) {
 	res.send('Hello world, I am a chat bot')
 })
 
+var messNamesArray = ["Sannasi", "PF", "UG", "PG"];
+var messName = '';
 exports.googlewebhook = functions.https.onRequest((request, response) => {
 	const app = new App({ request, response });
 	console.log('Request headers: ' + JSON.stringify(request.headers));
