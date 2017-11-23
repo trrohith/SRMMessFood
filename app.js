@@ -84,11 +84,12 @@ app.post('/googlewebhook/', function (req, res) {
 	res.setHeader('Content-Type', 'application/json');
 	var messName = "Sannasi";
 	var DateWanted = params['date-time'];
+	var mealType = params.mealType;
 	if (DateWanted == '') {
 		DateWanted = req.body.timestamp;
 	}
 	var date = new Date(DateWanted.substring(0, 10));
-	if (params.mealType == '') {
+	if (mealType == '') {
 		admin.database().ref('/Menu/' + messName + '/' + date.getDay()).once('value').then(function (snapshot) {
 			var currently = snapshot.val();
 			console.log(currently);
