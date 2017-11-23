@@ -67,6 +67,7 @@ const sessionIds = new Map();
 app.get('/', function (req, res) {
 	res.send('Hello world, I am a chat bot')
 })
+<<<<<<< HEAD
 // for Google verification
 app.get('/googlewebhook/', function (req, res) {
 	console.log("request");
@@ -81,6 +82,8 @@ app.post('/googlewebhook/', function (req, res) {
 		res.sendStatus(200);
 	});
 
+=======
+>>>>>>> parent of d373028... Google Test
 
 // for Facebook verification
 app.get('/messengerwebhook/', function (req, res) {
