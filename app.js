@@ -333,7 +333,7 @@ function sendToApiAi(sender, text) {
 
 	sendTypingOn(sender);
 	let apiaiRequest = apiAiService.textRequest(text, {
-		userID: senderID.get(sender)
+		ID: sender
 	});
 
 	apiaiRequest.on('response', (response) => {
