@@ -92,6 +92,9 @@ app.post('/googlewebhook/', function (req, res) {
 	}
 	var date = new Date(DateWanted.substring(0, 10));
 	date = addMinutes(date, 330);
+	if(action!=''){
+		console.log(JSON.stringify(action));
+	}
 	if (messName == '') {
 		var refPath = referencePathMessPreference(req);
 		getMessName(refPath, function(resultValue){
@@ -104,7 +107,9 @@ app.post('/googlewebhook/', function (req, res) {
 				});
 			}
 			else{
-				//ask for mess name
+				askToSetMess(function(toSendValue){
+					res.send(toSendValue);
+				})
 			}
 		});
 	}
@@ -115,7 +120,9 @@ app.post('/googlewebhook/', function (req, res) {
 			});
 		}
 		else{
-			//ask for mess name
+			askToSetMess(function(toSendValue){
+				res.send(toSendValue);
+			})
 		}
 	}
 	
@@ -140,6 +147,14 @@ function retrieveMenuOptions(action, mealType, messName, date, callback){
 			callback(JSON.stringify({ "speech": response, "displayText": response }));
 		});
 	}
+}
+function askToSetMess(callback){
+	callback({"speech":"What would be your preferred mess?",
+	"contextOut":[{"name":"_actions_on_google_","lifespan":100,"parameters":{}}],
+	"data":{"google":{"expectUserResponse":true,"noInputPrompts":[],"richResponse":{"items":[
+		{"simpleResponse":{"textToSpeech":"What would be your preferred mess?"}}],
+		"suggestions":[{"title":"Sannasi"},{"title":"PF"},{"title":"UG"},{"title":"PG"}
+	]}}}});
 }
 // for Facebook verification
 app.get('/messengerwebhook/', function (req, res) {
