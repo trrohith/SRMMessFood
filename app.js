@@ -265,7 +265,7 @@ function particularDayMenu(messName, date, callback){
 						"intent": "actions.intent.OPTION", "data": {
 							"@type": "type.googleapis.com/google.actions.v2.OptionValueSpec",
 							"listSelect": {
-								"title": "Meals served on " + dayOfWeekAsString(date.getDay()),
+								"title": "Meals served on " + dayOfWeekAsString(date.getDay()) + " in " + messName,
 								"items": [{ "optionInfo": { "key": "Breakfast" }, "title": "Breakfast", "description": BreakfastContents },
 								{ "optionInfo": { "key": "Lunch" }, "title": "Lunch", "description": LunchContents },
 								{ "optionInfo": { "key": "Snacks" }, "title": "Snacks", "description": SnacksContents },
