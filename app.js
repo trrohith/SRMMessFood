@@ -8,8 +8,6 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const app = express();
 const uuid = require('uuid');
-process.env.DEBUG = 'actions-on-google:*';
-const App = require('actions-on-google').DialogflowApp;
 
 
 // Messenger API parameters
