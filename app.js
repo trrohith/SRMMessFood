@@ -105,48 +105,23 @@ app.post('/googlewebhook/', function (req, res) {
 			} else {
 				saveMessName(refPath + `/mess`, '');
 			}
-			/*if (validMess(messName)) {
+			if (validMess(messName)) {
 				admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
-					currently = snapshot.val().value;
+					res.send(particularDayMenu(messName, date));
 				});
 			}
 			else {
 				//Ask for valid mess
-			}*/
+			}
 		});
 	}
-	if (action == 'MEAL_LIST') {
+	else if (action == 'MEAL_LIST') {
 		var response = 'You got into a list response';
 		console.log(req.body.result);
 		res.send(JSON.stringify({ "speech": response, "displayText": response }));
 	}
 	else if (mealType == '') {
-		admin.database().ref('/Menu/' + messName + '/' + date.getDay()).once('value').then(function (snapshot) {
-			var currently = snapshot.val();
-			var BreakfastContents = currently.breakfast.value;
-			var LunchContents = currently.lunch.value;
-			var SnacksContents = currently.snacks.value;
-			var DinnerContents = currently.dinner.value;
-			res.send(JSON.stringify({
-				"speech": "Click to know more in detail", "contextOut": [{ "name": "_actions_on_google_", "lifespan": 100 }], "data": {
-					"google": {
-						"expectUserResponse": true, "noInputPrompts": [], "isSsml": false, "systemIntent": {
-							"intent": "actions.intent.OPTION", "data": {
-								"@type": "type.googleapis.com/google.actions.v2.OptionValueSpec",
-								"listSelect": {
-									"title": "Meals served on " + dayOfWeekAsString(date.getDay()),
-									"items": [{ "optionInfo": { "key": "Breakfast" }, "title": "Breakfast", "description": BreakfastContents },
-									{ "optionInfo": { "key": "Lunch" }, "title": "Lunch", "description": LunchContents },
-									{ "optionInfo": { "key": "Snacks" }, "title": "Snacks", "description": SnacksContents },
-									{ "optionInfo": { "key": "Dinner" }, "title": "Dinner", "description": DinnerContents }
-									]
-								}
-							}
-						}
-					}
-				}
-			}));
-		});
+		res.send(particularDayMenu(messName, date));
 	}
 	else if (validMess(messName)) {
 		admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
@@ -247,6 +222,35 @@ function saveMessName(refPath, valueToSave) {
 	admin.database().ref(refPath).set(valueToSave)
 		.then(snapshot => {
 		});
+}
+
+function particularDayMenu(messName, date){
+	admin.database().ref('/Menu/' + messName + '/' + date.getDay()).once('value').then(function (snapshot) {
+		var currently = snapshot.val();
+		var BreakfastContents = currently.breakfast.value;
+		var LunchContents = currently.lunch.value;
+		var SnacksContents = currently.snacks.value;
+		var DinnerContents = currently.dinner.value;
+		return (JSON.stringify({
+			"speech": "Click to know more in detail", "contextOut": [{ "name": "_actions_on_google_", "lifespan": 100 }], "data": {
+				"google": {
+					"expectUserResponse": true, "noInputPrompts": [], "isSsml": false, "systemIntent": {
+						"intent": "actions.intent.OPTION", "data": {
+							"@type": "type.googleapis.com/google.actions.v2.OptionValueSpec",
+							"listSelect": {
+								"title": "Meals served on " + dayOfWeekAsString(date.getDay()),
+								"items": [{ "optionInfo": { "key": "Breakfast" }, "title": "Breakfast", "description": BreakfastContents },
+								{ "optionInfo": { "key": "Lunch" }, "title": "Lunch", "description": LunchContents },
+								{ "optionInfo": { "key": "Snacks" }, "title": "Snacks", "description": SnacksContents },
+								{ "optionInfo": { "key": "Dinner" }, "title": "Dinner", "description": DinnerContents }
+								]
+							}
+						}
+					}
+				}
+			}
+		}));
+	});
 }
 function receivedMessage(event) {
 
