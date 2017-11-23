@@ -93,7 +93,7 @@ app.post('/googlewebhook/', function (req, res) {
 	var date = new Date(DateWanted.substring(0, 10));
 	date = addMinutes(date, 330);
 	if (messName == '') {
-		var refPath = referencePath(req);
+		var refPath = referencePathMessPreference(req);
 		console.log(refPath);
 		var messData;
 		admin.database().ref(refPath).once('value').then(function (snapshot) {
