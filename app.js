@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const app = express();
 const uuid = require('uuid');
+process.env.DEBUG = 'actions-on-google:*';
+const App = require('actions-on-google').DialogflowApp;
 
 
 // Messenger API parameters
@@ -79,47 +81,8 @@ app.post('/googlewebhook', function (req, res) {
 	  res.setHeader('Content-Type', 'application/json');
 	
 	  var response = `You have gotten the backend code to talk!`;
-	  res.send(JSON.stringify({  "conversationToken": "",
-	  "expectUserResponse": true,
-	  "expectedInputs": [
-		  {
-			  "inputPrompt": {
-				  "richInitialPrompt": {
-					  "items": [
-						  {
-							  "simpleResponse": {
-								  "textToSpeech": "Math and prime numbers it is!"
-							  }
-						  },
-						  {
-							  "basicCard": {
-								  "title": "Math & prime numbers",
-								  "formattedText": "42 is an even composite number. It\n    is composed of three distinct prime numbers multiplied together. It\n    has a total of eight divisors. 42 is an abundant number, because the\n    sum of its proper divisors 54 is greater than itself. To count from\n    1 to 42 would take you about twenty-one…",
-								  "image": {
-									  "url": "https://example.google.com/42.png",
-									  "accessibilityText": "Image alternate text"
-								  },
-								  "buttons": [
-									  {
-										  "title": "Read more",
-										  "openUrlAction": {
-											  "url": "https://example.google.com/mathandprimes"
-										  }
-									  }
-								  ]
-							  }
-						  }
-					  ],
-					  "suggestions": []
-				  }
-			  },
-			  "possibleIntents": [
-				  {
-					  "intent": "actions.intent.TEXT"
-				  }
-			  ]
-		  }
-	  ]}));
+	  const GoogleApp = new App({ req, res});
+	  GoogleApp.tell(response);
 });
 
 	

@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "actions-on-google": "^1.6.1",
     "apiai": "^2.0.7",
     "body-parser": "^1.15.1",
     "express": "^4.13.4",
