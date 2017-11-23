@@ -296,7 +296,7 @@ function handleApiAiResponse(sender, response) {
 	let contexts = response.result.contexts;
 	let parameters = response.result.parameters;
 	try{
-		let messages = messages.data.google.richResponse.suggestions;
+		messages = messages.data.google.richResponse.suggestions;
 	}catch(e){
 		console.log("NO quick reply");
 	}
