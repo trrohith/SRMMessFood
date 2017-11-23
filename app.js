@@ -565,7 +565,11 @@ function sendListMessage(recipientId, elements) {
 		message: {
 			attachment: {
 				type: "template",
-				payload: elements
+				payload: {
+					"template_type": "list",
+					"top_element_style": "compact",
+					"elements": elements
+				  }
 			}
 		}
 	};
