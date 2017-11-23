@@ -304,7 +304,7 @@ function handleApiAiResponse(sender, response) {
 		quickReply = false;
 	}
 	try{
-		messages = messages.data.listSelect.items;
+		messages = messages.data.google.listSelect.items;
 	}
 	catch(e){
 		console.log("NO list reply");
