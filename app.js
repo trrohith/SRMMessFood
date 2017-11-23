@@ -211,7 +211,7 @@ function receivedMessage(event) {
 		sessionIds.set(senderID, uuid.v1());
 	}
 	//console.log("Received message for user %d and page %d at %d with message:", senderID, recipientID, timeOfMessage);
-	console.log(JSON.stringify(message));
+	console.log(JSON.stringify(event));
 
 	var isEcho = message.is_echo;
 	var messageId = message.mid;
