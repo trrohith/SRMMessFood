@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const app = express();
 const uuid = require('uuid');
+var messNamesArray = ["Sannasi", "PF", "UG", "PG"];
 
 
 // Messenger API parameters
