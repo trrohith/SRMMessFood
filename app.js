@@ -190,7 +190,7 @@ function handleEcho(messageId, appId, metadata) {
 function handleApiAiAction(sender, action, responseText, contexts, parameters) {
 	switch (action) {
 
-		case EXACT_MEAL:
+		case 'EXACT_MEAL':
 			var data = parameters;
 			console.log(JSON.stringify(data));
 			var date = new Date("2017-11-23");
@@ -202,6 +202,7 @@ function handleApiAiAction(sender, action, responseText, contexts, parameters) {
 				var currently = snapshot.val().value;
 				console.log(currently);
 			});
+			break;
 		default:
 			//unhandled action, just send back the text
 			sendTextMessage(sender, responseText);
