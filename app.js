@@ -298,7 +298,7 @@ function handleApiAiResponse(sender, response) {
 	console.log(JSON.stringify(messages));
 	sendTypingOff(sender);
 
-	if (isDefined(messages) && (messages.length > 1)) {
+	if (isDefined(messages)) {
 		if (isDefined(messages.data.google.richResponse.suggestions)) {
 			let replies = [];
 			messages.forEach(element => {
