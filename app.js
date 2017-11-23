@@ -292,7 +292,7 @@ function handleApiAiResponse(sender, response) {
 	let responseText = response.result.fulfillment.speech;
 	let responseData = response.result.fulfillment.data;
 	let messages=[];
-	if(typeof response.result.fulfillment.data.google.richResponse.suggestions!=='undefined'){
+	if(isDefined(response.result.fulfillment.data.google.richResponse.suggestions)){
 	messages = response.result.fulfillment.data.google.richResponse.suggestions;
 	}
 	let action = response.result.action;
