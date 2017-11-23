@@ -128,7 +128,7 @@ function retrieveMenuOptions(action, mealType, messName, date, callback){
 	else if (mealType == '') {
 		particularDayMenu(messName, date, function(resultValue){
 			callback(resultValue);
-		});;
+		});
 	}
 	else if (validMess(messName)) {
 		admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
