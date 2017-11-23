@@ -227,6 +227,7 @@ function referencePathMessPreference(request) {
 function getMessName(refPath, callback){
 	console.log(refPath);
 	var messData;
+	var messName='';
 	admin.database().ref(refPath).once('value').then(function (snapshot) {
 		messData = snapshot.val();
 		if (messData) {
