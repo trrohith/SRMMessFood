@@ -195,7 +195,7 @@ function handleApiAiAction(sender, action, responseText, contexts, parameters) {
 			console.log(JSON.stringify(data));
 			var date = new Date("2017-11-23");
 			var messName = "Sannasi";
-			var mealType = "breakfast";
+			var mealType = data.mealType;
 			var referenceValue = '/Menu/' + messName + '/' + date.getDay() + '/' + mealType;
 			console.log(referenceValue);
 			admin.database().ref(referenceValue).once('value').then(function (snapshot) {
