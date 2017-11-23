@@ -107,7 +107,7 @@ app.post('/googlewebhook/', function (req, res) {
 				"speech": "Click to know more in detail", "contextOut": [{ "name": "_actions_on_google_", "lifespan": 100 }], "data": {
 					"google": {
 						"expectUserResponse": true, "noInputPrompts": [], "isSsml": false, "systemIntent": {
-							"intent": "actions.intent.OPTION", "data": {
+							"intent": "ExactMeal", "data": {
 								"@type": "type.googleapis.com/google.actions.v2.OptionValueSpec",
 								"listSelect": {
 									"title": "Meals served",
