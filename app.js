@@ -95,8 +95,10 @@ app.post('/googlewebhook/', function (req, res) {
 	if (messName == '') {
 		var refPath = referencePathMessPreference(req);
 		getMessName(refPath, function(resultValue){
+			console.log(resultValue);
 			if(validMess(resultValue)){
 				retrieveMenuOptions(action, mealType, messName, date, function(toSendValue){
+					console.log(toSendValue);
 					res.send(toSendValue);
 				});
 			}
@@ -106,7 +108,7 @@ app.post('/googlewebhook/', function (req, res) {
 		});
 	}
 	else{
-		if(validMess(resultValue)){
+		if(validMess(messName)){
 			retrieveMenuOptions(action, mealType, messName, date, function(toSendValue){
 				res.send(toSendValue);
 			});
