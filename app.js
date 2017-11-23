@@ -1,3 +1,5 @@
+import { memoize } from '../../../Library/Caches/typescript/2.6/node_modules/@types/async';
+
 'use strict';
 
 const apiai = require('apiai');
@@ -295,7 +297,7 @@ function handleApiAiResponse(sender, response) {
 	let action = response.result.action;
 	let contexts = response.result.contexts;
 	let parameters = response.result.parameters;
-
+	console.log(JSON.stringify(messages));
 	sendTypingOff(sender);
 
 	if (isDefined(messages) && (messages.length == 1 && messages[0].type != 0 || messages.length > 1)) {
