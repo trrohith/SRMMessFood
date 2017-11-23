@@ -299,14 +299,18 @@ function handleApiAiResponse(sender, response) {
 	sendTypingOff(sender);
 
 	if (isDefined(messages) && (messages.length > 1)) {
-		let message = {};
-		message.push({"type":"2"});
-		message.push({"title":responseText});
+		let replies = [];
 		messages.forEach(element => {
-			message.push({"replies":element.title});
+			let reply =
+			{
+				"content_type": "text",
+				"title": element.title,
+				"payload": element.title
+			}
+			replies.push(reply);
 		});
-		console.log(message);
-		handleMessage(message, sender);
+		console.log(replies);
+		sendQuickReply(sender, responseText, replies);
 	} else if (responseText == '' && !isDefined(action)) {
 		//api ai could not evaluate input.
 		console.log('Unknown query' + response.result.resolvedQuery);
