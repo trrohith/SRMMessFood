@@ -202,6 +202,29 @@ function handleApiAiAction(sender, action, responseText, contexts, parameters) {
 				var currently = snapshot.val().value;
 				console.log(currently);
 				sendTextMessage(sender, currently);
+				let replies = [
+					{
+						"content_type": "text",
+						"title": "Sannasi",
+						 "payload": "Sannasi"
+						},
+						{
+							"content_type": "text",
+							"title": "PF",
+							 "payload": "PF"
+							},
+							{
+								"content_type": "text",
+								"title": "PG",
+								 "payload": "PG"
+								},
+								{
+									"content_type": "text",
+									"title": "UG",
+									 "payload": "UG"
+									}
+					];
+				sendQuickReply(sender,"Question", replies);
 			});
 			break;
 		default:
