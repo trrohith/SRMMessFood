@@ -423,8 +423,7 @@ function sendToApiAi(sender, text) {
 
 	sendTypingOn(sender);
 	let apiaiRequest = apiAiService.textRequest(text, {
-		sessionId: sessionIds.get(sender),
-		userID: sender
+		sessionId: sender
 	});
 
 	apiaiRequest.on('response', (response) => {
