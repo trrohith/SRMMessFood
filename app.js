@@ -51,12 +51,12 @@ app.use(bodyParser.json())
 var admin = require("firebase-admin");
 admin.initializeApp({
 	credential: admin.credential.cert({
-	  projectId: "srmmessfood",
-	  clientEmail: "firebase-adminsdk-76myt@srmmessfood.iam.gserviceaccount.com",
-	  privateKey: "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCtxflAlaQG+Vsq\ns0+uvVUajCv5hKhVGit3aZDucFHC3x0FUuJ55BJIN//YUQBJ3vL+UVIbo5l8DxxN\nAyXJIv+Tt7mBsvX17FOHtJXGqZm0Rqlsu/4hi38Ms6s3cM80vkxifeeC0mEhRDbn\npRExibYK5pgwQQ8oIkrj4abw5ZlYlSFb34k/AHvN0MM0ZM0/+Z1dZ2pUNvunCx1y\nxOmTso03L+gQ8QwVhnu0zJ+xL3RLgjxthMkfCueOa3mQPrroVq6+utGbBbHk9Swy\no6xz3K1gUksHAMN6p66YkZPkXYm6hNuTZ1Qwzs6EqKCmUWQqZN2gbIuIS3D3SpxN\nnIZwBXKvAgMBAAECggEAKABAhhtsLKbN06B/ISw4IOpPXRqqXRyvEMfeMuTsDT2q\nwoT32TMk+jbZ0AOlW1vU97HkgrRAKoyX6SpmUkyaJHjQXQjDEZ8bA0wQhjCYTyVM\n7ti/gR1JW7UoHpT7PZronmt5FWY0MaIwOVaIBK08mHnIYqM3R/fM4XQaJ63ShM89\ngY2/rwc/SJVXjOJUFidV1y33oPhxPb53C9WDI+GLDiu8rpeZi2nCHMSd/767M4SB\nM4Mw42buCKljhVTC6GifIew8ldDLyCvyk1iqWBE7CBm+EHHr/hmHGDMPNNoQxtGY\nJ7VyIPIvY53Qu05jet5KZilXQRsfHi0osruHr7lfoQKBgQDvdbLVpsBCH7zXVrl5\nsfz/eyCvbBBdySvo/CSE6UyMpjUfT4ODO58akTBCamlgiKZeFhSlzci3HMqNO8Lc\nbF7H6rRV5q5jO7RytHjbpmGYP/ymBoA5bjk1SK1eRPejGjjYKZ+nz0am4cBCA5tF\ngXYzV51wHDSCeoAWG1JgPf9KiQKBgQC5xsKN13aFo0ZRcNRo5NiKOYCMSwNieIB3\n7bVIcFoBhX6wjTmsgO2h2fOKPTl8oLAB6LkiJ0eG9e6BCZOFNJpof7tvnxJrHoy8\nFYwFf0JaK0ib+Jg4mF6AnRDH99IjSywYKV75nnJTlyT6dpsgB7FzvLbZz6AkZOS+\nd/73vvQldwKBgQCac0ERG0gAnnXwMwjY3JvBsYpIe5wm0d3XneJ0NAJi6cVz15aM\n68TYnvMQs5AaaqlcIEPbGdsveIuRAw3RnLiZm+ILUgoDCXx/S7Z0fmGOkR8Fe0Xz\nRQvzOVhRaIyNkBlAG8DVvRTmCNA4BBl/gFxcC1QJ/rdDvX2mRKMiXnqueQKBgE79\nBJG8j+dIQci02Ytz6eHziwWbi2fd5nmXd2HCa3KEKRa2JVSESQVtHxCi8YNc6xkU\ns0qjOtVWUb9JrBCSCijuTmqqTvF+vsXlv3BC6JpgFvJCI67EkkHLBmyPoShiePAY\n/wnRZbjG5fEcZt6ahse38GLx1ZxDzcJyUNVTuokHAoGBAO8tJpqcMdUj4FVbxVob\njOBuR7xlTww+RKNHemxd9riGly3w3wHFaqHQ8OH+7CUWOM/DcGuIDQZjZaWiai9P\nh25UD7kShn4u5a9IhPuDs2hJi5pF2r64c1Ij/DOUQpivbxUpU+b9/SH7ozjmM5OE\n5W5y0lSr2oyrxaekc3F8yKJ3\n-----END PRIVATE KEY-----\n"
+		projectId: "srmmessfood",
+		clientEmail: "firebase-adminsdk-76myt@srmmessfood.iam.gserviceaccount.com",
+		privateKey: "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCtxflAlaQG+Vsq\ns0+uvVUajCv5hKhVGit3aZDucFHC3x0FUuJ55BJIN//YUQBJ3vL+UVIbo5l8DxxN\nAyXJIv+Tt7mBsvX17FOHtJXGqZm0Rqlsu/4hi38Ms6s3cM80vkxifeeC0mEhRDbn\npRExibYK5pgwQQ8oIkrj4abw5ZlYlSFb34k/AHvN0MM0ZM0/+Z1dZ2pUNvunCx1y\nxOmTso03L+gQ8QwVhnu0zJ+xL3RLgjxthMkfCueOa3mQPrroVq6+utGbBbHk9Swy\no6xz3K1gUksHAMN6p66YkZPkXYm6hNuTZ1Qwzs6EqKCmUWQqZN2gbIuIS3D3SpxN\nnIZwBXKvAgMBAAECggEAKABAhhtsLKbN06B/ISw4IOpPXRqqXRyvEMfeMuTsDT2q\nwoT32TMk+jbZ0AOlW1vU97HkgrRAKoyX6SpmUkyaJHjQXQjDEZ8bA0wQhjCYTyVM\n7ti/gR1JW7UoHpT7PZronmt5FWY0MaIwOVaIBK08mHnIYqM3R/fM4XQaJ63ShM89\ngY2/rwc/SJVXjOJUFidV1y33oPhxPb53C9WDI+GLDiu8rpeZi2nCHMSd/767M4SB\nM4Mw42buCKljhVTC6GifIew8ldDLyCvyk1iqWBE7CBm+EHHr/hmHGDMPNNoQxtGY\nJ7VyIPIvY53Qu05jet5KZilXQRsfHi0osruHr7lfoQKBgQDvdbLVpsBCH7zXVrl5\nsfz/eyCvbBBdySvo/CSE6UyMpjUfT4ODO58akTBCamlgiKZeFhSlzci3HMqNO8Lc\nbF7H6rRV5q5jO7RytHjbpmGYP/ymBoA5bjk1SK1eRPejGjjYKZ+nz0am4cBCA5tF\ngXYzV51wHDSCeoAWG1JgPf9KiQKBgQC5xsKN13aFo0ZRcNRo5NiKOYCMSwNieIB3\n7bVIcFoBhX6wjTmsgO2h2fOKPTl8oLAB6LkiJ0eG9e6BCZOFNJpof7tvnxJrHoy8\nFYwFf0JaK0ib+Jg4mF6AnRDH99IjSywYKV75nnJTlyT6dpsgB7FzvLbZz6AkZOS+\nd/73vvQldwKBgQCac0ERG0gAnnXwMwjY3JvBsYpIe5wm0d3XneJ0NAJi6cVz15aM\n68TYnvMQs5AaaqlcIEPbGdsveIuRAw3RnLiZm+ILUgoDCXx/S7Z0fmGOkR8Fe0Xz\nRQvzOVhRaIyNkBlAG8DVvRTmCNA4BBl/gFxcC1QJ/rdDvX2mRKMiXnqueQKBgE79\nBJG8j+dIQci02Ytz6eHziwWbi2fd5nmXd2HCa3KEKRa2JVSESQVtHxCi8YNc6xkU\ns0qjOtVWUb9JrBCSCijuTmqqTvF+vsXlv3BC6JpgFvJCI67EkkHLBmyPoShiePAY\n/wnRZbjG5fEcZt6ahse38GLx1ZxDzcJyUNVTuokHAoGBAO8tJpqcMdUj4FVbxVob\njOBuR7xlTww+RKNHemxd9riGly3w3wHFaqHQ8OH+7CUWOM/DcGuIDQZjZaWiai9P\nh25UD7kShn4u5a9IhPuDs2hJi5pF2r64c1Ij/DOUQpivbxUpU+b9/SH7ozjmM5OE\n5W5y0lSr2oyrxaekc3F8yKJ3\n-----END PRIVATE KEY-----\n"
 	}),
 	databaseURL: "https://srmmessfood.firebaseio.com/"
-  });
+});
 const apiAiService = apiai(config.API_AI_CLIENT_ACCESS_TOKEN, {
 	language: "en",
 	requestSource: "fb"
@@ -87,17 +87,6 @@ app.get('/messengerwebhook/', function (req, res) {
  *
  */
 app.post('/messengerwebhook/', function (req, res) {
-	var data = req.body;
-	console.log(JSON.stringify(data));
-	var date = new Date("2017-11-23");
-	var messName="Sannasi";
-	var mealType = "breakfast";
-	var referenceValue='/Menu/' + messName + '/' + date.getDay() + '/' + mealType;
-	console.log(referenceValue);
-	admin.database().ref(referenceValue).once('value').then(function (snapshot) {
-		currently = snapshot.val().value;
-		console.log(currently);
-		});
 
 	// Make sure this is a page subscription
 	if (data.object == 'page') {
@@ -178,9 +167,9 @@ function receivedMessage(event) {
 }
 
 
-function handleMessageAttachments(messageAttachments, senderID){
+function handleMessageAttachments(messageAttachments, senderID) {
 	//for now just reply
-	sendTextMessage(senderID, "Attachment received. Thank you.");	
+	sendTextMessage(senderID, "Attachment received. Thank you.");
 }
 
 function handleQuickReply(senderID, quickReply, messageId) {
@@ -198,6 +187,19 @@ function handleEcho(messageId, appId, metadata) {
 
 function handleApiAiAction(sender, action, responseText, contexts, parameters) {
 	switch (action) {
+
+		case EXACT_MEAL:
+			var data = parameters;
+			console.log(JSON.stringify(data));
+			var date = new Date("2017-11-23");
+			var messName = "Sannasi";
+			var mealType = "breakfast";
+			var referenceValue = '/Menu/' + messName + '/' + date.getDay() + '/' + mealType;
+			console.log(referenceValue);
+			admin.database().ref(referenceValue).once('value').then(function (snapshot) {
+				var currently = snapshot.val().value;
+				console.log(currently);
+			});
 		default:
 			//unhandled action, just send back the text
 			sendTextMessage(sender, responseText);
@@ -213,11 +215,11 @@ function handleMessage(message, sender) {
 			let replies = [];
 			for (var b = 0; b < message.replies.length; b++) {
 				let reply =
-				{
-					"content_type": "text",
-					"title": message.replies[b],
-					"payload": message.replies[b]
-				}
+					{
+						"content_type": "text",
+						"title": message.replies[b],
+						"payload": message.replies[b]
+					}
 				replies.push(reply);
 			}
 			sendQuickReply(sender, message.title, replies);
@@ -270,7 +272,7 @@ function handleCardMessages(messages, sender) {
 
 		let element = {
 			"title": message.title,
-			"image_url":message.imageUrl,
+			"image_url": message.imageUrl,
 			"subtitle": message.subtitle,
 			"buttons": buttons
 		};
@@ -292,24 +294,24 @@ function handleApiAiResponse(sender, response) {
 
 	if (isDefined(messages) && (messages.length == 1 && messages[0].type != 0 || messages.length > 1)) {
 		let timeoutInterval = 1100;
-		let previousType ;
+		let previousType;
 		let cardTypes = [];
 		let timeout = 0;
 		for (var i = 0; i < messages.length; i++) {
 
-			if ( previousType == 1 && (messages[i].type != 1 || i == messages.length - 1)) {
+			if (previousType == 1 && (messages[i].type != 1 || i == messages.length - 1)) {
 
 				timeout = (i - 1) * timeoutInterval;
 				setTimeout(handleCardMessages.bind(null, cardTypes, sender), timeout);
 				cardTypes = [];
 				timeout = i * timeoutInterval;
 				setTimeout(handleMessage.bind(null, messages[i], sender), timeout);
-			} else if ( messages[i].type == 1 && i == messages.length - 1) {
+			} else if (messages[i].type == 1 && i == messages.length - 1) {
 				cardTypes.push(messages[i]);
-                		timeout = (i - 1) * timeoutInterval;
-                		setTimeout(handleCardMessages.bind(null, cardTypes, sender), timeout);
-                		cardTypes = [];
-			} else if ( messages[i].type == 1 ) {
+				timeout = (i - 1) * timeoutInterval;
+				setTimeout(handleCardMessages.bind(null, cardTypes, sender), timeout);
+				cardTypes = [];
+			} else if (messages[i].type == 1) {
 				cardTypes.push(messages[i]);
 			} else {
 				timeout = i * timeoutInterval;
@@ -528,7 +530,7 @@ function sendGenericMessage(recipientId, elements) {
 
 
 function sendReceiptMessage(recipientId, recipient_name, currency, payment_method,
-							timestamp, elements, address, summary, adjustments) {
+	timestamp, elements, address, summary, adjustments) {
 	// Generate a random receipt ID as the API requires a unique ID
 	var receiptId = "order" + Math.floor(Math.random() * 1000);
 
@@ -569,7 +571,7 @@ function sendQuickReply(recipientId, text, replies, metadata) {
 		},
 		message: {
 			text: text,
-			metadata: isDefined(metadata)?metadata:'',
+			metadata: isDefined(metadata) ? metadata : '',
 			quick_replies: replies
 		}
 	};
@@ -645,7 +647,7 @@ function sendAccountLinking(recipientId) {
 					buttons: [{
 						type: "account_link",
 						url: config.SERVER_URL + "/authorize"
-          }]
+					}]
 				}
 			}
 		}
