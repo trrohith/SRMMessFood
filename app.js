@@ -70,7 +70,7 @@ app.get('/', function (req, res) {
 	res.send('Hello world, I am a chat bot')
 })
 
-exports.mealFinder = functions.https.onRequest((request, response) => {
+exports.googlewebhook = functions.https.onRequest((request, response) => {
 	const app = new App({ request, response });
 	console.log('Request headers: ' + JSON.stringify(request.headers));
 	console.log('Request body: ' + JSON.stringify(request.body));
