@@ -1,0 +1,16 @@
+curl -X POST -H "Content-Type: application/json" -d '{
+  "persistent_menu":[{
+    "call_to_actions":[
+      {        
+        "type":"postback",
+        "title":"Today's Menu",      
+        "payload":"Today's Menu"        
+      },
+      {
+        "type":"postback",
+        "title":"Change preferred mess",
+        "payload":"Change my preferred mess"
+      }
+    ]
+  }]
+}' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAAEs1AmyFy4BALDN0i5pFZCyZAIGxLJqYA0Sugizi1yN6BeikuogpDL2F3faKrotFKg9UbKNVrdpiA0h6dtMRS0FDZByYQvL6ZA8EAYNS28tIT4ARBVoBVITAHDcyCRhq3c55zIQhcqEuIu0RKyfqYl1IrBQr3MYtJfKlIApiAZDZD"
