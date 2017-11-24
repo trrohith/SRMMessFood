@@ -94,7 +94,7 @@ app.post('/googlewebhook/', function (req, res) {
 			if (element.name === 'actions_intent_option') {
 				shouldGoOn = false;
 				var response = `You got into a list response with value ${element.name.parameters.OPTION}`;
-				callback(JSON.stringify({ "speech": response, "displayText": response }));
+				res.send(JSON.stringify({ "speech": response, "displayText": response }));
 			}
 		}
 		catch (e) {
