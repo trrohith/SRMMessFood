@@ -172,8 +172,8 @@ function retrieveMenuOptions(action, mealType, messName, date, callback) {
 		});
 	}
 	else if (validMess(messName)) {
-		console.log('/Menu/' + messName + '/' + date.getDay() + '/' + mealType);
 		admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
+			console.log(snapshot.val());
 			var currently = snapshot.val().value;
 			var response = `In ${messName} for ${dayOfWeekAsString(date.getDay())} ${mealType} there is ${currently}`;
 			callback(JSON.stringify({ "speech": response, "displayText": response }));
