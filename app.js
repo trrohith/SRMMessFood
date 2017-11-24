@@ -172,7 +172,6 @@ function retrieveMenuOptions(action, mealType, messName, date, callback) {
 		});
 	}
 	else if (validMess(messName)) {
-		console.log('/Menu/' + messName + '/' + date.getDay() + '/' + mealType);
 		admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
 			var currently = snapshot.val().value;
 			var response = `In ${messName} for ${dayOfWeekAsString(date.getDay())} ${mealType} there is ${currently}`;
@@ -181,14 +180,22 @@ function retrieveMenuOptions(action, mealType, messName, date, callback) {
 	}
 }
 function askToSetMess(callback) {
-	var speech = 'What would be your preferred mess?';
-	var replies = [];
 	if(messNamesArray.length<2){
-		admin.database().ref('/Menu/MessList').once('value').then(function (snapshot) {
-			var currently = snapshot.val();
-			console.log(currently);
+		loadMessArray(function(returnValue){
+			sendMessResponse(function(valueToSend){
+				callback(valueToSend);
+			});
 		});
 	}
+	else{
+		sendMessResponse(function(valueToSend){
+			callback(valueToSend);
+		});
+	}
+}
+function sendMessResponse(callback){
+	var speech = 'What would be your preferred mess?';
+	var replies = [];
 	messNamesArray.forEach(element => {
 		var reply = {"title":element};
 		replies.push(reply);
@@ -205,6 +212,13 @@ function askToSetMess(callback) {
 				}
 			}
 		}
+	});	
+}
+function loadMessArray(callback){
+	admin.database().ref('/Menu/MessList').once('value').then(function (snapshot) {
+		var currently = snapshot.val();
+		messNamesArray = currently;
+		callback(messNamesArray);
 	});
 }
 // for Facebook verification
@@ -270,7 +284,14 @@ function dayOfWeekAsString(dayIndex) {
 }
 
 function validMess(searchStr) {
-	return (messNamesArray.indexOf(searchStr) > -1)
+	if(messNamesArray.length<2){
+		loadMessArray(function(returnValue){
+			return (messNamesArray.indexOf(searchStr) > -1)
+		});
+	}
+	else{
+		return (messNamesArray.indexOf(searchStr) > -1)
+	}
 }
 function addMinutes(date, minutes) {
 	return new Date(date.getTime() + minutes * 60000);
