@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const app = express();
 const uuid = require('uuid');
-var messNamesArray = ["Sannasi", "PF", "UG", "PG"];
+var messNamesArray = ["Sannasi"];
 
 
 // Messenger API parameters
@@ -172,6 +172,7 @@ function retrieveMenuOptions(action, mealType, messName, date, callback) {
 		});
 	}
 	else if (validMess(messName)) {
+		console.log('/Menu/' + messName + '/' + date.getDay() + '/' + mealType);
 		admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
 			var currently = snapshot.val().value;
 			var response = `In ${messName} for ${dayOfWeekAsString(date.getDay())} ${mealType} there is ${currently}`;
@@ -182,6 +183,12 @@ function retrieveMenuOptions(action, mealType, messName, date, callback) {
 function askToSetMess(callback) {
 	var speech = 'What would be your preferred mess?';
 	var replies = [];
+	if(messNamesArray.length<2){
+		admin.database().ref('/Menu/MessList').once('value').then(function (snapshot) {
+			var currently = snapshot.val();
+			console.log(currently);
+		});
+	}
 	messNamesArray.forEach(element => {
 		var reply = {"title":element};
 		replies.push(reply);
