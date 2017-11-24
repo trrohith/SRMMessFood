@@ -98,7 +98,7 @@ app.post('/googlewebhook/', function (req, res) {
 				var mealType = string[0];
 				var date = new Date(string[4].substring(0, 10));
 				date = addMinutes(date, 330);
-				console.log(date);
+				messName = messName.toLowerCase();
 				retrieveMenuOptions(action, mealType, messName, date, function (toSendValue) {
 					res.send(toSendValue);
 				});
@@ -173,7 +173,6 @@ function retrieveMenuOptions(action, mealType, messName, date, callback) {
 	}
 	else if (validMess(messName)) {
 		admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
-			console.log(snapshot.val());
 			var currently = snapshot.val().value;
 			var response = `In ${messName} for ${dayOfWeekAsString(date.getDay())} ${mealType} there is ${currently}`;
 			callback(JSON.stringify({ "speech": response, "displayText": response }));
