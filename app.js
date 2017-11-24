@@ -81,74 +81,80 @@ app.get('/googlewebhook/', function (req, res) {
 })
 app.post('/googlewebhook/', function (req, res) {
 	console.log(req.body);
+	res.setHeader('Content-Type', 'application/json');
 	var params = req.body.result.parameters;
 	var action = req.body.result.action;
 	console.log(JSON.stringify(action));
 	console.log("NEW REQUEST");
 	console.log(JSON.stringify(req.body.result.contexts));
-	res.setHeader('Content-Type', 'application/json');
-	var messName = params.messName;
-	var DateWanted = params['date-time'];
-	var mealType = params.mealType;
-	if (DateWanted == '') {
-		DateWanted = req.body.timestamp;
-	}
-	var date = new Date(DateWanted.substring(0, 10));
-	date = addMinutes(date, 330);
-	if(JSON.stringify(action)==='SET_MESS'||JSON.stringify(action)==='\"SET_MESS\"'){
-		if(!validMess(messName)){ 
-			askToSetMess(function(toSendValue){
-				res.send(toSendValue);
-			});
+	var contexts = req.body.result.contexts;
+	var shouldGoOn = true;
+	contexts.forEach(element => {
+		if (element.name === 'actions_intent_option') {
+			shouldGoOn = false;
+			var response = `You got into a list response with value ${element.name.parameters.OPTION}`;
+			callback(JSON.stringify({ "speech": response, "displayText": response }));
 		}
-		else{
+	});
+	if (shouldGoOn) {
+		var messName = params.messName;
+		var DateWanted = params['date-time'];
+		var mealType = params.mealType;
+		if (DateWanted == '') {
+			DateWanted = req.body.timestamp;
+		}
+		var date = new Date(DateWanted.substring(0, 10));
+		date = addMinutes(date, 330);
+		if (JSON.stringify(action) === 'SET_MESS' || JSON.stringify(action) === '\"SET_MESS\"') {
+			if (!validMess(messName)) {
+				askToSetMess(function (toSendValue) {
+					res.send(toSendValue);
+				});
+			}
+			else {
+				var refPath = referencePathMessPreference(req);
+				saveMessName(refPath + `/mess`, messName);
+				var response = `I have set your preferred mess to be ${messName}`;
+				res.send({ "speech": response, "displayText": response });
+			}
+		}
+		else if (messName == '') {
 			var refPath = referencePathMessPreference(req);
-			saveMessName(refPath+`/mess`,messName);
-			var response = `I have set your preferred mess to be ${messName}`;
-			res.send({ "speech": response, "displayText": response});
+			getMessName(refPath, function (resultValue) {
+				console.log(resultValue);
+				if (validMess(resultValue)) {
+					messName = resultValue;
+					retrieveMenuOptions(action, mealType, messName, date, function (toSendValue) {
+						console.log(toSendValue);
+						res.send(toSendValue);
+					});
+				}
+				else {
+					askToSetMess(function (toSendValue) {
+						res.send(toSendValue);
+					});
+				}
+			});
 		}
-	}
-	else if (messName == '') {
-		var refPath = referencePathMessPreference(req);
-		getMessName(refPath, function(resultValue){
-			console.log(resultValue);
-			if(validMess(resultValue)){
-				messName = resultValue;
-				retrieveMenuOptions(action, mealType, messName, date, function(toSendValue){
-					console.log(toSendValue);
+		else {
+			if (validMess(messName)) {
+				retrieveMenuOptions(action, mealType, messName, date, function (toSendValue) {
 					res.send(toSendValue);
 				});
 			}
-			else{
-				askToSetMess(function(toSendValue){
+			else {
+				askToSetMess(function (toSendValue) {
 					res.send(toSendValue);
 				});
 			}
-		});
-	}
-	else{
-		if(validMess(messName)){
-			retrieveMenuOptions(action, mealType, messName, date, function(toSendValue){
-				res.send(toSendValue);
-			});
-		}
-		else{
-			askToSetMess(function(toSendValue){
-				res.send(toSendValue);
-			});
 		}
 	}
-	
 })
 
-function retrieveMenuOptions(action, mealType, messName, date, callback){
-	console.log("Retrieve "+mealType);
-	if (action == 'MEAL_LIST') {
-		var response = 'You got into a list response';
-		callback(JSON.stringify({ "speech": response, "displayText": response }));
-	}
-	else if (mealType == '') {
-		particularDayMenu(messName, date, function(resultValue){
+function retrieveMenuOptions(action, mealType, messName, date, callback) {
+	console.log("Retrieve " + mealType);
+	if (mealType == '') {
+		particularDayMenu(messName, date, function (resultValue) {
 			console.log(resultValue);
 			callback(resultValue);
 		});
@@ -161,13 +167,21 @@ function retrieveMenuOptions(action, mealType, messName, date, callback){
 		});
 	}
 }
-function askToSetMess(callback){
-	callback({"speech":"What would be your preferred mess?",
-	"contextOut":[{"name":"SET_MESS","lifespan":1,"parameters":{}}],
-	"data":{"google":{"expectUserResponse":true,"noInputPrompts":[],"richResponse":{"items":[
-		{"simpleResponse":{"textToSpeech":"What would be your preferred mess?"}}],
-		"suggestions":[{"title":"Sannasi"},{"title":"PF"},{"title":"UG"},{"title":"PG"}
-	]}}}});
+function askToSetMess(callback) {
+	callback({
+		"speech": "What would be your preferred mess?",
+		"contextOut": [{ "name": "SET_MESS", "lifespan": 1, "parameters": {} }],
+		"data": {
+			"google": {
+				"expectUserResponse": true, "noInputPrompts": [], "richResponse": {
+					"items": [
+						{ "simpleResponse": { "textToSpeech": "What would be your preferred mess?" } }],
+					"suggestions": [{ "title": "Sannasi" }, { "title": "PF" }, { "title": "UG" }, { "title": "PG" }
+					]
+				}
+			}
+		}
+	});
 }
 // for Facebook verification
 app.get('/messengerwebhook/', function (req, res) {
@@ -255,10 +269,10 @@ function referencePathMessPreference(request) {
 	}
 }
 
-function getMessName(refPath, callback){
+function getMessName(refPath, callback) {
 	console.log(refPath);
 	var messData;
-	var messName='';
+	var messName = '';
 	admin.database().ref(refPath).once('value').then(function (snapshot) {
 		messData = snapshot.val();
 		if (messData) {
@@ -278,8 +292,8 @@ function saveMessName(refPath, valueToSave) {
 		});
 }
 
-function particularDayMenu(messName, date, callback){
-	console.log("DAY Menu "+messName);
+function particularDayMenu(messName, date, callback) {
+	console.log("DAY Menu " + messName);
 	admin.database().ref('/Menu/' + messName + '/' + date.getDay()).once('value').then(function (snapshot) {
 		var currently = snapshot.val();
 		var BreakfastContents = currently.breakfast.value;
@@ -294,10 +308,10 @@ function particularDayMenu(messName, date, callback){
 							"@type": "type.googleapis.com/google.actions.v2.OptionValueSpec",
 							"listSelect": {
 								"title": "Meals served on " + dayOfWeekAsString(date.getDay()) + " in " + messName,
-								"items": [{ "optionInfo": { "key": `Breakfast in ${messName} on ${dayOfWeekAsString(date.getDay())}` }, "title": "Breakfast", "description": BreakfastContents },
-								{ "optionInfo": { "key": `Lunch in ${messName} on ${dayOfWeekAsString(date.getDay())}` }, "title": "Lunch", "description": LunchContents },
-								{ "optionInfo": { "key": `Snacks in ${messName} on ${dayOfWeekAsString(date.getDay())}` }, "title": "Snacks", "description": SnacksContents },
-								{ "optionInfo": { "key": `Dinner in ${messName} on ${dayOfWeekAsString(date.getDay())}` }, "title": "Dinner", "description": DinnerContents }
+								"items": [{ "optionInfo": { "key": `Breakfast in ${messName} on ${date}` }, "title": "Breakfast", "description": BreakfastContents },
+								{ "optionInfo": { "key": `Lunch in ${messName} on ${date}` }, "title": "Lunch", "description": LunchContents },
+								{ "optionInfo": { "key": `Snacks in ${messName} on ${date}` }, "title": "Snacks", "description": SnacksContents },
+								{ "optionInfo": { "key": `Dinner in ${messName} on ${date}` }, "title": "Dinner", "description": DinnerContents }
 								]
 							}
 						}
