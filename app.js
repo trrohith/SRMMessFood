@@ -93,8 +93,8 @@ app.post('/googlewebhook/', function (req, res) {
 	}
 	var date = new Date(DateWanted.substring(0, 10));
 	date = addMinutes(date, 330);
-	if(JSON.stringify(action)=="SET_MESS"){
-		if(!validMess(messName)){
+	if(JSON.stringify(action)=="SET_MESS"||JSON.stringify=="\"SET_MESS\""){
+		if(!validMess(messName)){ 
 			askToSetMess(function(toSendValue){
 				res.send(toSendValue);
 			});
