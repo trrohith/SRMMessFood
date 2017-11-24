@@ -100,7 +100,9 @@ app.post('/googlewebhook/', function (req, res) {
 			});
 		}
 		else{
-			var response = "Attempting to save";
+			var refPath = referencePathMessPreference(req);
+			saveMessName(refPath+`/mess`,messName);
+			var response = `I have set your preferred mess to be ${messName}`;
 			res.send({ "speech": response, "displayText": response});
 		}
 	}
