@@ -83,9 +83,6 @@ app.post('/googlewebhook/', function (req, res) {
 	res.setHeader('Content-Type', 'application/json');
 	var params = req.body.result.parameters;
 	var action = req.body.result.action;
-	console.log(JSON.stringify(action));
-	console.log("NEW REQUEST");
-	console.log(JSON.stringify(req.body.result.contexts));
 	var contexts = req.body.result.contexts;
 	var shouldGoOn = true;
 	contexts.forEach(element => {
@@ -133,11 +130,9 @@ app.post('/googlewebhook/', function (req, res) {
 		else if (messName == '') {
 			var refPath = referencePathMessPreference(req);
 			getMessName(refPath, function (resultValue) {
-				console.log(resultValue);
 				if (validMess(resultValue)) {
 					messName = resultValue;
 					retrieveMenuOptions(action, mealType, messName, date, function (toSendValue) {
-						console.log(toSendValue);
 						res.send(toSendValue);
 					});
 				}
@@ -164,10 +159,8 @@ app.post('/googlewebhook/', function (req, res) {
 })
 
 function retrieveMenuOptions(action, mealType, messName, date, callback) {
-	console.log("Retrieve " + mealType);
 	if (mealType == '') {
 		particularDayMenu(messName, date, function (resultValue) {
-			console.log(resultValue);
 			callback(resultValue);
 		});
 	}
@@ -243,7 +236,6 @@ app.get('/messengerwebhook/', function (req, res) {
 app.post('/messengerwebhook/', function (req, res) {
 
 	var data = req.body;
-	console.log(JSON.stringify(data));
 	// Make sure this is a page subscription
 	if (data.object == 'page') {
 		// Iterate over each entry
@@ -315,15 +307,12 @@ function referencePathMessPreference(request) {
 }
 
 function getMessName(refPath, callback) {
-	console.log(refPath);
 	var messData;
 	var messName = '';
 	admin.database().ref(refPath).once('value').then(function (snapshot) {
 		messData = snapshot.val();
 		if (messData) {
-			console.log(messData);
 			messName = snapshot.val().mess;
-			console.log('Mess: ' + messName);
 			callback(messName);
 		} else {
 			saveMessName(refPath + `/mess`, '');
@@ -338,8 +327,9 @@ function saveMessName(refPath, valueToSave) {
 }
 
 function particularDayMenu(messName, date, callback) {
-	console.log("DAY Menu " + messName);
+	console.log('/Menu/' + messName + '/' + date.getDay());
 	admin.database().ref('/Menu/' + messName + '/' + date.getDay()).once('value').then(function (snapshot) {
+		console.log(snapshot.val());
 		var currently = snapshot.val();
 		var BreakfastContents = currently.breakfast.value;
 		var LunchContents = currently.lunch.value;
@@ -510,7 +500,6 @@ function handleCardMessages(messages, sender) {
 
 
 function handleApiAiResponse(sender, response) {
-	console.log(JSON.stringify(response));
 	let responseText = response.result.fulfillment.speech;
 	let responseData = response.result.fulfillment.data;
 	let messages = response.result.fulfillment;
@@ -562,7 +551,6 @@ function handleApiAiResponse(sender, response) {
 			};
 			replies.push(reply);
 		});
-		console.log(replies);
 		sendTextMessage(sender, messages.title);
 		sendListMessage(sender, replies);
 	}
