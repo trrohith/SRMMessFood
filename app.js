@@ -179,16 +179,21 @@ function retrieveMenuOptions(action, mealType, messName, date, callback) {
 	}
 }
 function askToSetMess(callback) {
+	var speech = 'What would be your preferred mess?';
+	var replies = [];
+	messNamesArray.forEach(element => {
+		var reply = {"title":element};
+		replies.push(reply);
+	});
 	callback({
-		"speech": "What would be your preferred mess?",
+		"speech": speech,
 		"contextOut": [{ "name": "SET_MESS", "lifespan": 1, "parameters": {} }],
 		"data": {
 			"google": {
 				"expectUserResponse": true, "noInputPrompts": [], "richResponse": {
 					"items": [
-						{ "simpleResponse": { "textToSpeech": "What would be your preferred mess?" } }],
-					"suggestions": [{ "title": "Sannasi" }, { "title": "PF" }, { "title": "UG" }, { "title": "PG" }
-					]
+						{ "simpleResponse": { "textToSpeech": speech } }],
+					"suggestions": replies
 				}
 			}
 		}
@@ -319,10 +324,10 @@ function particularDayMenu(messName, date, callback) {
 							"@type": "type.googleapis.com/google.actions.v2.OptionValueSpec",
 							"listSelect": {
 								"title": "Meals served on " + dayOfWeekAsString(date.getDay()) + " in " + messName,
-								"items": [{ "optionInfo": { "key": `Breakfast in ${messName} on ${date}` }, "title": "Breakfast", "description": BreakfastContents },
-								{ "optionInfo": { "key": `Lunch in ${messName} on ${date}` }, "title": "Lunch", "description": LunchContents },
-								{ "optionInfo": { "key": `Snacks in ${messName} on ${date}` }, "title": "Snacks", "description": SnacksContents },
-								{ "optionInfo": { "key": `Dinner in ${messName} on ${date}` }, "title": "Dinner", "description": DinnerContents }
+								"items": [{ "optionInfo": { "key": `Breakfast in ${messName} on ${dayOfWeekAsString(date.getDay())}` }, "title": "Breakfast", "description": BreakfastContents },
+								{ "optionInfo": { "key": `Lunch in ${messName} on ${dayOfWeekAsString(date.getDay())}` }, "title": "Lunch", "description": LunchContents },
+								{ "optionInfo": { "key": `Snacks in ${messName} on ${dayOfWeekAsString(date.getDay())}` }, "title": "Snacks", "description": SnacksContents },
+								{ "optionInfo": { "key": `Dinner in ${messName} on ${dayOfWeekAsString(date.getDay())}` }, "title": "Dinner", "description": DinnerContents }
 								]
 							}
 						}
