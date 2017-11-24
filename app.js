@@ -92,12 +92,11 @@ app.post('/googlewebhook/', function (req, res) {
 		try {
 			if (element.name === 'actions_intent_option') {
 				shouldGoOn = false;
-				var response = `You got into a list response with value ${element.parameters.OPTION}`;
 				var string = element.parameters.OPTION;
 				string = string.split(" ");
 				var messName = string[2];
 				var mealType = string[0];
-				var date = string[4];
+				var date = new Date(string[4]);
 				console.log(string);
 				retrieveMenuOptions(action, mealType, messName, date, function (toSendValue) {
 					res.send(toSendValue);
@@ -325,10 +324,10 @@ function particularDayMenu(messName, date, callback) {
 							"@type": "type.googleapis.com/google.actions.v2.OptionValueSpec",
 							"listSelect": {
 								"title": "Meals served on " + dayOfWeekAsString(date.getDay()) + " in " + messName,
-								"items": [{ "optionInfo": { "key": `Breakfast in ${messName} on ${date}` }, "title": "Breakfast", "description": BreakfastContents },
-								{ "optionInfo": { "key": `Lunch in ${messName} on ${date}` }, "title": "Lunch", "description": LunchContents },
-								{ "optionInfo": { "key": `Snacks in ${messName} on ${date}` }, "title": "Snacks", "description": SnacksContents },
-								{ "optionInfo": { "key": `Dinner in ${messName} on ${date}` }, "title": "Dinner", "description": DinnerContents }
+								"items": [{ "optionInfo": { "key": `Breakfast in ${messName} on ${date.toISOString()}` }, "title": "Breakfast", "description": BreakfastContents },
+								{ "optionInfo": { "key": `Lunch in ${messName} on ${date.toISOString()}` }, "title": "Lunch", "description": LunchContents },
+								{ "optionInfo": { "key": `Snacks in ${messName} on ${date.toISOString()}` }, "title": "Snacks", "description": SnacksContents },
+								{ "optionInfo": { "key": `Dinner in ${messName} on ${date.toISOString()}` }, "title": "Dinner", "description": DinnerContents }
 								]
 							}
 						}
