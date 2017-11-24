@@ -96,7 +96,10 @@ app.post('/googlewebhook/', function (req, res) {
 				var response = `You got into a list response with value ${element.parameters.OPTION}`;
 				var string = element.parameters.OPTION;
 				string = string.split(" ");
-				console.log(string);
+				var messName = string[2];
+				var mealType = string[0];
+				var date = string[4];
+				console.log(messName+mealType+date);
 				res.send(JSON.stringify({ "speech": response, "displayText": response }));
 			}
 		}
