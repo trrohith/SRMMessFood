@@ -80,7 +80,6 @@ app.get('/googlewebhook/', function (req, res) {
 	console.log(JSON.stringify(req));
 })
 app.post('/googlewebhook/', function (req, res) {
-	console.log(req.body);
 	res.setHeader('Content-Type', 'application/json');
 	var params = req.body.result.parameters;
 	var action = req.body.result.action;
@@ -99,6 +98,7 @@ app.post('/googlewebhook/', function (req, res) {
 				var messName = string[2];
 				var mealType = string[0];
 				var date = string[4];
+				console.log(string);
 				retrieveMenuOptions(action, mealType, messName, date, function (toSendValue) {
 					res.send(toSendValue);
 				});
