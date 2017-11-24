@@ -318,7 +318,7 @@ function particularDayMenu(messName, date, callback) {
 		var SnacksContents = currently.snacks.value;
 		var DinnerContents = currently.dinner.value;
 		callback(JSON.stringify({
-			"speech": "Click to know more in detail", "contextOut": [{ "name": "_actions_on_google_", "lifespan": 1 }], "data": {
+			"speech": "Meals served on " + dayOfWeekAsString(date.getDay()) + " in " + messName, "displayText": "Click to know more in detail", "contextOut": [{ "name": "_actions_on_google_", "lifespan": 1 }], "data": {
 				"google": {
 					"expectUserResponse": true, "noInputPrompts": [], "isSsml": false, "systemIntent": {
 						"intent": "actions.intent.OPTION", "data": {
