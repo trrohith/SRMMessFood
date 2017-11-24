@@ -325,10 +325,10 @@ function particularDayMenu(messName, date, callback) {
 							"@type": "type.googleapis.com/google.actions.v2.OptionValueSpec",
 							"listSelect": {
 								"title": "Meals served on " + dayOfWeekAsString(date.getDay()) + " in " + messName,
-								"items": [{ "optionInfo": { "key": `Breakfast in ${messName} on ${dayOfWeekAsString(date.getDay())}` }, "title": "Breakfast", "description": BreakfastContents },
-								{ "optionInfo": { "key": `Lunch in ${messName} on ${dayOfWeekAsString(date.getDay())}` }, "title": "Lunch", "description": LunchContents },
-								{ "optionInfo": { "key": `Snacks in ${messName} on ${dayOfWeekAsString(date.getDay())}` }, "title": "Snacks", "description": SnacksContents },
-								{ "optionInfo": { "key": `Dinner in ${messName} on ${dayOfWeekAsString(date.getDay())}` }, "title": "Dinner", "description": DinnerContents }
+								"items": [{ "optionInfo": { "key": `Breakfast in ${messName} on ${date}` }, "title": "Breakfast", "description": BreakfastContents },
+								{ "optionInfo": { "key": `Lunch in ${messName} on ${date}` }, "title": "Lunch", "description": LunchContents },
+								{ "optionInfo": { "key": `Snacks in ${messName} on ${date}` }, "title": "Snacks", "description": SnacksContents },
+								{ "optionInfo": { "key": `Dinner in ${messName} on ${date}` }, "title": "Dinner", "description": DinnerContents }
 								]
 							}
 						}
