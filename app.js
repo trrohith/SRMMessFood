@@ -109,7 +109,7 @@ app.post('/googlewebhook/', function (req, res) {
 		var messName = params.messName;
 		var DateWanted = params['date-time'];
 		var mealType = params.mealType;
-		if (DateWanted == '') {
+		if (DateWanted == '' || DateWanted.length<10) {
 			DateWanted = req.body.timestamp;
 		}
 		var date = new Date(DateWanted.substring(0, 10));
