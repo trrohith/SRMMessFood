@@ -99,8 +99,9 @@ app.post('/googlewebhook/', function (req, res) {
 				var messName = string[2];
 				var mealType = string[0];
 				var date = string[4];
-				console.log(messName+mealType+date);
-				res.send(JSON.stringify({ "speech": response, "displayText": response }));
+				retrieveMenuOptions(action, mealType, messName, date, function (toSendValue) {
+					res.send(toSendValue);
+				});
 			}
 		}
 		catch (e) {
