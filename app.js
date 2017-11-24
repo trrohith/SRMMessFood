@@ -92,6 +92,7 @@ app.post('/googlewebhook/', function (req, res) {
 	contexts.forEach(element => {
 		try {
 			if (element.name === 'actions_intent_option') {
+				console.log(JSON.stringify(element));
 				shouldGoOn = false;
 				var response = `You got into a list response with value ${element.name.parameters.OPTION}`;
 				res.send(JSON.stringify({ "speech": response, "displayText": response }));
