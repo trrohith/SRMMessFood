@@ -90,10 +90,15 @@ app.post('/googlewebhook/', function (req, res) {
 	var contexts = req.body.result.contexts;
 	var shouldGoOn = true;
 	contexts.forEach(element => {
-		if (element.name === 'actions_intent_option') {
-			shouldGoOn = false;
-			var response = `You got into a list response with value ${element.name.parameters.OPTION}`;
-			callback(JSON.stringify({ "speech": response, "displayText": response }));
+		try {
+			if (element.name === 'actions_intent_option') {
+				shouldGoOn = false;
+				var response = `You got into a list response with value ${element.name.parameters.OPTION}`;
+				callback(JSON.stringify({ "speech": response, "displayText": response }));
+			}
+		}
+		catch (e) {
+
 		}
 	});
 	if (shouldGoOn) {
