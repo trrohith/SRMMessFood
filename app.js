@@ -98,7 +98,7 @@ app.post('/googlewebhook/', function (req, res) {
 				var mealType = string[0];
 				var date = new Date(string[4].substring(0, 10));
 				date = addMinutes(date, 330);
-				messName = messName.toLowerCase();
+				mealType = mealType.toLowerCase();
 				retrieveMenuOptions(action, mealType, messName, date, function (toSendValue) {
 					res.send(toSendValue);
 				});
