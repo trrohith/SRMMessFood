@@ -148,7 +148,7 @@ function retrieveMenuOptions(action, mealType, messName, date, callback){
 }
 function askToSetMess(callback){
 	callback({"speech":"What would be your preferred mess?",
-	"contextOut":[{"name":"_actions_on_google_","lifespan":1,"parameters":{}}],
+	"contextOut":[{"name":"SET_MESS","lifespan":1,"parameters":{}}],
 	"data":{"google":{"expectUserResponse":true,"noInputPrompts":[],"richResponse":{"items":[
 		{"simpleResponse":{"textToSpeech":"What would be your preferred mess?"}}],
 		"suggestions":[{"title":"Sannasi"},{"title":"PF"},{"title":"UG"},{"title":"PG"}
