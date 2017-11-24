@@ -93,7 +93,18 @@ app.post('/googlewebhook/', function (req, res) {
 	}
 	var date = new Date(DateWanted.substring(0, 10));
 	date = addMinutes(date, 330);
-	if (messName == '') {
+	if(JSON.stringify(action)=="SET_MESS"){
+		if(!validMess(messName)){
+			askToSetMess(function(toSendValue){
+				res.send(toSendValue);
+			});
+		}
+		else{
+			var response = "Attempting to save";
+			res.send({ "speech": response, "displayText": response});
+		}
+	}
+	else if (messName == '') {
 		var refPath = referencePathMessPreference(req);
 		getMessName(refPath, function(resultValue){
 			console.log(resultValue);
@@ -107,7 +118,7 @@ app.post('/googlewebhook/', function (req, res) {
 			else{
 				askToSetMess(function(toSendValue){
 					res.send(toSendValue);
-				})
+				});
 			}
 		});
 	}
@@ -120,7 +131,7 @@ app.post('/googlewebhook/', function (req, res) {
 		else{
 			askToSetMess(function(toSendValue){
 				res.send(toSendValue);
-			})
+			});
 		}
 	}
 	
