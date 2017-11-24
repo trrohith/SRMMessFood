@@ -85,6 +85,7 @@ app.post('/googlewebhook/', function (req, res) {
 	var action = req.body.result.action;
 	console.log(JSON.stringify(action));
 	console.log("NEW REQUEST");
+	console.log(JSON.stringify(req.body.result.contexts));
 	res.setHeader('Content-Type', 'application/json');
 	var messName = params.messName;
 	var DateWanted = params['date-time'];
