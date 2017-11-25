@@ -3,7 +3,5 @@ module.exports = {
     FB_VERIFY_TOKEN: 'SRMMessFoodBot',
     API_AI_CLIENT_ACCESS_TOKEN: '5c90cfe539c9498b933e06babef9510d',
     FB_APP_SECRET: 'cf22dc85279206a53ad9f25791676589',
-    MICROSOFT_APP_ID:'aa4e4a72-045a-4839-97e8-909cfd4ae526',
-    MICROSOFT_APP_PASSWORD: 'uymrvGYG336:[pkLAWH24!$',
     SERVER_URL: "https://srmmessfood.herokuapp.com/",
 };

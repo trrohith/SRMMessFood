@@ -8,7 +8,6 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const app = express();
 const uuid = require('uuid');
-var messNamesArray = ["Sannasi"];
 
 
 // Messenger API parameters
@@ -33,9 +32,9 @@ if (!config.SERVER_URL) { //used for ink to static files
 app.set('port', (process.env.PORT || 5000))
 
 //verify request came from facebook
-/*app.use(bodyParser.json({
+app.use(bodyParser.json({
 	verify: verifyRequestSignature
-}));*/
+}));
 
 //serve static files in the public directory
 app.use(express.static('public'));
@@ -49,15 +48,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 
 
-var admin = require("firebase-admin");
-admin.initializeApp({
-	credential: admin.credential.cert({
-		projectId: "srmmessfood",
-		clientEmail: "firebase-adminsdk-76myt@srmmessfood.iam.gserviceaccount.com",
-		privateKey: "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCtxflAlaQG+Vsq\ns0+uvVUajCv5hKhVGit3aZDucFHC3x0FUuJ55BJIN//YUQBJ3vL+UVIbo5l8DxxN\nAyXJIv+Tt7mBsvX17FOHtJXGqZm0Rqlsu/4hi38Ms6s3cM80vkxifeeC0mEhRDbn\npRExibYK5pgwQQ8oIkrj4abw5ZlYlSFb34k/AHvN0MM0ZM0/+Z1dZ2pUNvunCx1y\nxOmTso03L+gQ8QwVhnu0zJ+xL3RLgjxthMkfCueOa3mQPrroVq6+utGbBbHk9Swy\no6xz3K1gUksHAMN6p66YkZPkXYm6hNuTZ1Qwzs6EqKCmUWQqZN2gbIuIS3D3SpxN\nnIZwBXKvAgMBAAECggEAKABAhhtsLKbN06B/ISw4IOpPXRqqXRyvEMfeMuTsDT2q\nwoT32TMk+jbZ0AOlW1vU97HkgrRAKoyX6SpmUkyaJHjQXQjDEZ8bA0wQhjCYTyVM\n7ti/gR1JW7UoHpT7PZronmt5FWY0MaIwOVaIBK08mHnIYqM3R/fM4XQaJ63ShM89\ngY2/rwc/SJVXjOJUFidV1y33oPhxPb53C9WDI+GLDiu8rpeZi2nCHMSd/767M4SB\nM4Mw42buCKljhVTC6GifIew8ldDLyCvyk1iqWBE7CBm+EHHr/hmHGDMPNNoQxtGY\nJ7VyIPIvY53Qu05jet5KZilXQRsfHi0osruHr7lfoQKBgQDvdbLVpsBCH7zXVrl5\nsfz/eyCvbBBdySvo/CSE6UyMpjUfT4ODO58akTBCamlgiKZeFhSlzci3HMqNO8Lc\nbF7H6rRV5q5jO7RytHjbpmGYP/ymBoA5bjk1SK1eRPejGjjYKZ+nz0am4cBCA5tF\ngXYzV51wHDSCeoAWG1JgPf9KiQKBgQC5xsKN13aFo0ZRcNRo5NiKOYCMSwNieIB3\n7bVIcFoBhX6wjTmsgO2h2fOKPTl8oLAB6LkiJ0eG9e6BCZOFNJpof7tvnxJrHoy8\nFYwFf0JaK0ib+Jg4mF6AnRDH99IjSywYKV75nnJTlyT6dpsgB7FzvLbZz6AkZOS+\nd/73vvQldwKBgQCac0ERG0gAnnXwMwjY3JvBsYpIe5wm0d3XneJ0NAJi6cVz15aM\n68TYnvMQs5AaaqlcIEPbGdsveIuRAw3RnLiZm+ILUgoDCXx/S7Z0fmGOkR8Fe0Xz\nRQvzOVhRaIyNkBlAG8DVvRTmCNA4BBl/gFxcC1QJ/rdDvX2mRKMiXnqueQKBgE79\nBJG8j+dIQci02Ytz6eHziwWbi2fd5nmXd2HCa3KEKRa2JVSESQVtHxCi8YNc6xkU\ns0qjOtVWUb9JrBCSCijuTmqqTvF+vsXlv3BC6JpgFvJCI67EkkHLBmyPoShiePAY\n/wnRZbjG5fEcZt6ahse38GLx1ZxDzcJyUNVTuokHAoGBAO8tJpqcMdUj4FVbxVob\njOBuR7xlTww+RKNHemxd9riGly3w3wHFaqHQ8OH+7CUWOM/DcGuIDQZjZaWiai9P\nh25UD7kShn4u5a9IhPuDs2hJi5pF2r64c1Ij/DOUQpivbxUpU+b9/SH7ozjmM5OE\n5W5y0lSr2oyrxaekc3F8yKJ3\n-----END PRIVATE KEY-----\n"
-	}),
-	databaseURL: "https://srmmessfood.firebaseio.com/"
-});
 const apiAiService = apiai(config.API_AI_CLIENT_ACCESS_TOKEN, {
 	language: "en",
 	requestSource: "fb"
@@ -68,164 +58,7 @@ const sessionIds = new Map();
 app.get('/', function (req, res) {
 	res.send('Hello world, I am a chat bot')
 })
-app.get('/cortanawebhook',function(req, res){
-	console.log("CORTANA");
-	console.log("REQ");
-	console.log(req);
-	console.log("RES");
-	console.log(res);
-})
-app.post('/cortanawebhook', function(req, res){
-	console.log("CORTANA RETURN");
-	console.log(JSON.stringify(req.body));
-})
-//Google pattern for normal speech
-//{ "speech": response, "displayText": response}
-//Google pattern for suggestion chips
-//{"speech":"Speech","contextOut":[{"name":"_actions_on_google_","lifespan":100,"parameters":{}}],"data":{"google":{"expectUserResponse":true,"noInputPrompts":[],"richResponse":{"items":[{"simpleResponse":{"textToSpeech":"Speech"}}],"suggestions":[{"title":"Option 1"},{"title":"Option 2"}]}}}}
-//Google pattern for list carousel
-//{"speech":"List Heading","contextOut":[{"name":"_actions_on_google_","lifespan":100}],"data":{"google":{"expectUserResponse":true,"noInputPrompts":[],"isSsml":false,"systemIntent":{"intent":"actions.intent.OPTION","data":{"@type":"type.googleapis.com/google.actions.v2.OptionValueSpec","listSelect":{"title":"Main Title","items":[{"optionInfo":{"key":"KEY_1"},"title":"Title 1","description":"Description 1"},{"optionInfo":{"key":"KEY_2"},"title":"Title 2","description":"Description 2"}]}}}}}}
-// for Google verification
-app.get('/googlewebhook/', function (req, res) {
-	console.log("request");
-	console.log(JSON.stringify(req));
-})
-app.post('/googlewebhook/', function (req, res) {
-	res.setHeader('Content-Type', 'application/json');
-	var params = req.body.result.parameters;
-	var action = req.body.result.action;
-	var contexts = req.body.result.contexts;
-	var shouldGoOn = true;
-	contexts.forEach(element => {
-		try {
-			if (element.name === 'actions_intent_option') {
-				shouldGoOn = false;
-				var string = element.parameters.OPTION;
-				string = string.split(" ");
-				var messName = string[2];
-				var mealType = string[0];
-				var date = new Date(string[4].substring(0, 10));
-				date = addMinutes(date, 330);
-				mealType = mealType.toLowerCase();
-				retrieveMenuOptions(action, mealType, messName, date, function (toSendValue) {
-					res.send(toSendValue);
-				});
-			}
-		}
-		catch (e) {
 
-		}
-	});
-	if (shouldGoOn) {
-		var messName = params.messName;
-		var DateWanted = params['date-time'];
-		var mealType = params.mealType;
-		if (DateWanted == '' || DateWanted.length<10) {
-			DateWanted = req.body.timestamp;
-		}
-		var date = new Date(DateWanted.substring(0, 10));
-		console.log(date);
-		date = addMinutes(date, 330);
-		if (JSON.stringify(action) === 'SET_MESS' || JSON.stringify(action) === '\"SET_MESS\"') {
-			if (!validMess(messName)) {
-				askToSetMess(function (toSendValue) {
-					res.send(toSendValue);
-				});
-			}
-			else {
-				var refPath = referencePathMessPreference(req);
-				saveMessName(refPath + `/mess`, messName);
-				var response = `I have set your preferred mess to be ${messName}`;
-				res.send({ "speech": response, "displayText": response });
-			}
-		}
-		else if (messName == '') {
-			var refPath = referencePathMessPreference(req);
-			getMessName(refPath, function (resultValue) {
-				if (validMess(resultValue)) {
-					messName = resultValue;
-					retrieveMenuOptions(action, mealType, messName, date, function (toSendValue) {
-						res.send(toSendValue);
-					});
-				}
-				else {
-					askToSetMess(function (toSendValue) {
-						res.send(toSendValue);
-					});
-				}
-			});
-		}
-		else {
-			if (validMess(messName)) {
-				retrieveMenuOptions(action, mealType, messName, date, function (toSendValue) {
-					res.send(toSendValue);
-				});
-			}
-			else {
-				askToSetMess(function (toSendValue) {
-					res.send(toSendValue);
-				});
-			}
-		}
-	}
-})
-
-function retrieveMenuOptions(action, mealType, messName, date, callback) {
-	if (mealType == '') {
-		particularDayMenu(messName, date, function (resultValue) {
-			callback(resultValue);
-		});
-	}
-	else if (validMess(messName)) {
-		admin.database().ref('/Menu/' + messName + '/' + date.getDay() + '/' + mealType).once('value').then(function (snapshot) {
-			var currently = snapshot.val().value;
-			var response = `In ${messName} for ${dayOfWeekAsString(date.getDay())} ${mealType} there is ${currently}`;
-			callback(JSON.stringify({ "speech": response, "displayText": response }));
-		});
-	}
-}
-function askToSetMess(callback) {
-	if(messNamesArray.length<2){
-		loadMessArray(function(returnValue){
-			sendMessResponse(function(valueToSend){
-				callback(valueToSend);
-			});
-		});
-	}
-	else{
-		sendMessResponse(function(valueToSend){
-			callback(valueToSend);
-		});
-	}
-}
-function sendMessResponse(callback){
-	var speech = 'What would be your preferred mess?';
-	var replies = [];
-	messNamesArray.forEach(element => {
-		var reply = {"title":element};
-		replies.push(reply);
-	});
-	callback({
-		"speech": speech,
-		"contextOut": [{ "name": "SET_MESS", "lifespan": 1, "parameters": {} }],
-		"data": {
-			"google": {
-				"expectUserResponse": true, "noInputPrompts": [], "richResponse": {
-					"items": [
-						{ "simpleResponse": { "textToSpeech": speech } }],
-					"suggestions": replies
-				}
-			}
-		}
-	});	
-}
-function loadMessArray(callback){
-	admin.database().ref('/Menu/MessList').once('value').then(function (snapshot) {
-		var currently = snapshot.val();
-		messNamesArray = currently;
-		callback(messNamesArray);
-	});
-}
 // for Facebook verification
 app.get('/messengerwebhook/', function (req, res) {
 	console.log("request");
@@ -282,92 +115,6 @@ app.post('/messengerwebhook/', function (req, res) {
 	}
 });
 
-
-function dayOfWeekAsString(dayIndex) {
-	return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][dayIndex];
-}
-
-function validMess(searchStr) {
-	if(messNamesArray.length<2){
-		loadMessArray(function(returnValue){
-			return (messNamesArray.indexOf(searchStr) > -1)
-		});
-	}
-	else{
-		return (messNamesArray.indexOf(searchStr) > -1)
-	}
-}
-function addMinutes(date, minutes) {
-	return new Date(date.getTime() + minutes * 60000);
-}
-
-function referencePathMessPreference(request) {
-	try {
-		var userID = request.body.originalRequest.data.user.userId;
-		return (`/users/google/${userID}/preferences`);
-	}
-	catch (e) {
-
-	}
-	try {
-		var userID = request.body.sessionId;
-		return (`/users/facebook/${userID}/preferences`);
-	}
-	catch (e) {
-
-	}
-}
-
-function getMessName(refPath, callback) {
-	var messData;
-	var messName = '';
-	admin.database().ref(refPath).once('value').then(function (snapshot) {
-		messData = snapshot.val();
-		if (messData) {
-			messName = snapshot.val().mess;
-			callback(messName);
-		} else {
-			saveMessName(refPath + `/mess`, '');
-			callback('');
-		}
-	});
-}
-function saveMessName(refPath, valueToSave) {
-	admin.database().ref(refPath).set(valueToSave)
-		.then(snapshot => {
-		});
-}
-
-function particularDayMenu(messName, date, callback) {
-	console.log('/Menu/' + messName + '/' + date.getDay());
-	admin.database().ref('/Menu/' + messName + '/' + date.getDay()).once('value').then(function (snapshot) {
-		console.log(snapshot.val());
-		var currently = snapshot.val();
-		var BreakfastContents = currently.breakfast.value;
-		var LunchContents = currently.lunch.value;
-		var SnacksContents = currently.snacks.value;
-		var DinnerContents = currently.dinner.value;
-		callback(JSON.stringify({
-			"speech": "Meals served on " + dayOfWeekAsString(date.getDay()) + " in " + messName, "displayText": "Click to know more in detail", "contextOut": [{ "name": "_actions_on_google_", "lifespan": 1 }], "data": {
-				"google": {
-					"expectUserResponse": true, "noInputPrompts": [], "isSsml": false, "systemIntent": {
-						"intent": "actions.intent.OPTION", "data": {
-							"@type": "type.googleapis.com/google.actions.v2.OptionValueSpec",
-							"listSelect": {
-								"title": "Meals served on " + dayOfWeekAsString(date.getDay()) + " in " + messName,
-								"items": [{ "optionInfo": { "key": `Breakfast in ${messName} on ${date.toISOString()}` }, "title": "Breakfast", "description": BreakfastContents },
-								{ "optionInfo": { "key": `Lunch in ${messName} on ${date.toISOString()}` }, "title": "Lunch", "description": LunchContents },
-								{ "optionInfo": { "key": `Snacks in ${messName} on ${date.toISOString()}` }, "title": "Snacks", "description": SnacksContents },
-								{ "optionInfo": { "key": `Dinner in ${messName} on ${date.toISOString()}` }, "title": "Dinner", "description": DinnerContents }
-								]
-							}
-						}
-					}
-				}
-			}
-		}));
-	});
-}
 function receivedMessage(event) {
 
 	var senderID = event.sender.id;
@@ -1126,10 +873,7 @@ function verifyRequestSignature(req, res, buf) {
 		var expectedHash = crypto.createHmac('sha1', config.FB_APP_SECRET)
 			.update(buf)
 			.digest('hex');
-		if (signatureHash == 'cf22dc85279206a53ad9f25791676589') {
-			console.log("From google");
-		}
-		else if (signatureHash != expectedHash) {
+		if (signatureHash != expectedHash) {
 			throw new Error("Couldn't validate the request signature.");
 		}
 	}
