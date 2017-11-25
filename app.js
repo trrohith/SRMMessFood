@@ -71,9 +71,9 @@ app.get('/', function (req, res) {
 app.get('/cortanawebhook',function(req, res){
 	console.log("CORTANA");
 	console.log("REQ");
-	console.log(JSON.stringify(req));
+	console.log(req);
 	console.log("RES");
-	console.log(JSON.stringify(res));
+	console.log(res);
 })
 app.post('/cortanawebhook', function(req, res){
 	console.log("CORTANA RETURN");
