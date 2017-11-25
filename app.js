@@ -78,9 +78,9 @@ app.get('/cortanawebhook',function(req, res){
 app.post('/cortanawebhook', function(req, res){
 	console.log("CORTANA RETURN");
 	console.log("REQ");
-	console.log(JSON.stringify(req));
+	console.log(req);
 	console.log("RES");
-	console.log(JSON.stringify(res));
+	console.log(res);
 })
 //Google pattern for normal speech
 //{ "speech": response, "displayText": response}
