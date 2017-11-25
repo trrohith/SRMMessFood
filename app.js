@@ -33,9 +33,9 @@ if (!config.SERVER_URL) { //used for ink to static files
 app.set('port', (process.env.PORT || 5000))
 
 //verify request came from facebook
-app.use(bodyParser.json({
+/*app.use(bodyParser.json({
 	verify: verifyRequestSignature
-}));
+}));*/
 
 //serve static files in the public directory
 app.use(express.static('public'));
@@ -67,6 +67,20 @@ const sessionIds = new Map();
 // Index route
 app.get('/', function (req, res) {
 	res.send('Hello world, I am a chat bot')
+})
+app.get('/cortanawebhook',function(req, res){
+	console.log("CORTANA");
+	console.log("REQ");
+	console.log(JSON.stringify(req));
+	console.log("RES");
+	console.log(JSON.stringify(res));
+})
+app.post('/cortanawebhook', function(req, res){
+	console.log("CORTANA RETURN");
+	console.log("REQ");
+	console.log(JSON.stringify(req));
+	console.log("RES");
+	console.log(JSON.stringify(res));
 })
 //Google pattern for normal speech
 //{ "speech": response, "displayText": response}
