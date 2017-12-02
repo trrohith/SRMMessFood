@@ -274,7 +274,7 @@ function handleApiAiResponse(sender, response) {
 		quickReply = false;
 	}
 	try {
-		messages = messages.data.google.systemIntent.data.listSelect;
+		messages = messages.data.google.system_intent.spec.option_value_spec.list_select;
 	}
 	catch (e) {
 		console.log("NO list reply");

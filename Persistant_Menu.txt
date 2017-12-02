@@ -1,14 +1,14 @@
-curl -X POST -H "Content-Type: application/json" -d '{
-  "persistent_menu":[{
+curl -X POST -H "Content-Type: application/json" -d '
+  "persistent_menu":[{"locale":"default",
     "call_to_actions":[
       {        
         "type":"postback",
-        "title":"Today's Menu",      
-        "payload":"Today's Menu"        
+        "title":"Today Menu",      
+        "payload":"Today"        
       },
       {
         "type":"postback",
-        "title":"Change preferred mess",
+        "title":"Change Preferred Mess",
         "payload":"Change my preferred mess"
       }
     ]
