@@ -310,7 +310,7 @@ function handleApiAiResponse(sender, response) {
 			};
 			replies.push(reply);
 		});
-		sendTextMessage(sender, messages.title);
+		sendTextMessage(sender, response.result.fulfillment.speech);
 		sendListMessage(sender, replies);
 	}
 	else if (responseText == '' && !isDefined(action)) {
