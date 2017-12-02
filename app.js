@@ -268,7 +268,7 @@ function handleApiAiResponse(sender, response) {
 	var quickReply = true;
 	var listReply = true;
 	try {
-		messages = messages.data.google.richResponse.suggestions;
+		messages = messages.data.google.rich_response.suggestions;
 	} catch (e) {
 		console.log("NO quick reply");
 		quickReply = false;
