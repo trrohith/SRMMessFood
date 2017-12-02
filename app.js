@@ -304,7 +304,7 @@ function handleApiAiResponse(sender, response) {
 				"buttons": [{
 					"title": element.title,
 					"type": "postback",
-					"payload": element.optionInfo.key
+					"payload": element.option_info.key
 				}
 				]
 			};
