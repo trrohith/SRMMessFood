@@ -78,7 +78,7 @@ function getSubscribedUser(reference, callback){
 	var messData;
 	console.log("REFERENCE:"+reference);
 	admin.database().ref(reference).once('value').then(function (snapshot) {
-		messData = snapshot.val().status;
+		messData = snapshot.val().status.status;
 		if(messData){
 			console.log(JSON.stringify(messData));
 			callback(messData);
