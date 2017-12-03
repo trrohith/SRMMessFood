@@ -108,13 +108,14 @@ app.get('/', function (req, res) {
 app.get('/sendBreakfast', function(req, res){
 	getSubscribedUsers(function(result){
 		console.log(result);
-		result = JSON.parse(result);
-		console.log(result);
-		result.forEach(element => {
+		for(var key in result){
+			console.log(key);
+		}
+		/*result.forEach(element => {
 			if(element.status.status=='1'){
 				sendToApiAi(element.ID, "Breakfast");
 			}
-		});
+		});*/
 	});
 	res.send('Okay sending breakfast');
 })
