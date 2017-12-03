@@ -109,7 +109,9 @@ app.get('/sendBreakfast', function(req, res){
 	getSubscribedUsers(function(result){
 		console.log(result);
 		for(var key in result){
-			console.log(key);
+			if(result.key.status.status == '1'){
+				sendToApiAi(key, "Breakfast");
+			}
 		}
 		/*result.forEach(element => {
 			if(element.status.status=='1'){
