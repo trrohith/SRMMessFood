@@ -75,9 +75,9 @@ function getSubscribedUsers(callback) {
 function getSubscribedUser(reference, callback){
 	var messData;
 	admin.database().ref(reference).once('value').then(function (snapshot) {
-		messData = snapshot.val().status.status;
+		messData = snapshot.val();
 		if(messData){
-			callback(messData);
+			callback(messData.status.status);
 		}
 		else{
 			return "0";
