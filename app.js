@@ -19,26 +19,6 @@ admin.initializeApp({
 	databaseURL: "https://srmmessfood.firebaseio.com/"
 });
 
-function getSubscribedUsers(callback) {
-	var messData;
-	var messName = '';
-	console.log("REFERENCE:"+refPath);
-	admin.database().ref(refPath).once('value').then(function (snapshot) {
-		messData = snapshot.val();
-		if (messData) {
-			messName = snapshot.val().mess;
-			console.log("Mess Name : " + messName);
-			callback(messName);
-		} else {
-			saveMessName(refPath, '');
-			callback('');
-		}
-	});
-}
-
-function saveSubscribedUser(refPath, valueToSave) {
-	admin.database().ref(refPath).push("ID");
-}
 
 // Messenger API parameters
 if (!config.FB_PAGE_TOKEN) {
@@ -84,19 +64,37 @@ const apiAiService = apiai(config.API_AI_CLIENT_ACCESS_TOKEN, {
 });
 const sessionIds = new Map();
 
+function getSubscribedUsers(callback) {
+	var messData;
+	var messName = '';
+	console.log("REFERENCE:"+refPath);
+	admin.database().ref(refPath).once('value').then(function (snapshot) {
+		messData = snapshot.val();
+		console.log(JSON.stringify(messData));
+	});
+}
+
+function saveSubscribedUser(refPath, ID, valueToSave) {
+	admin.database().ref(refPath+'/'+ID).push(valueToSave);
+}
+
 // Index route
 app.get('/', function (req, res) {
 	res.send('Hello world, I am a chat bot')
 })
 
 app.get('/sendBreakfast', function(req, res){
-	saveSubscribedUser(refPath, "TR");
-	sendToApiAi(1103399319763620,"Breakfast");
+	//sendToApiAi(1103399319763620,"Breakfast");
+	getSubscribedUsers(function(result){
+		res.send(result);
+	});
+	saveSubscribedUser(refPath, 1103399319763620, "1");
 	res.send('Okay sending breakfast');
 })
 
 app.get('/sendLunch', function(req, res){
-	sendToApiAi(1103399319763620,"Lunch");
+	//sendToApiAi(1103399319763620,"Lunch");
+	saveSubscribedUser(refPath, 1103399319763620, "0");
 	res.send('Okay sending lunch');
 })
 
