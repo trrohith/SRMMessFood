@@ -75,7 +75,7 @@ function getSubscribedUsers(callback) {
 }
 
 function saveSubscribedUser(refPath, ID, valueToSave) {
-	admin.database().ref(refPath+'/'+ID).push(valueToSave);
+	admin.database().ref(refPath+'/'+ID).set(valueToSave);
 }
 
 // Index route
