@@ -66,21 +66,17 @@ const sessionIds = new Map();
 
 function getSubscribedUsers(callback) {
 	var messData;
-	console.log("REFERENCE:"+refPath);
 	admin.database().ref(refPath).once('value').then(function (snapshot) {
 		messData = snapshot.val();
-		console.log(JSON.stringify(messData));
 		callback(messData);
 	});
 }
 
 function getSubscribedUser(reference, callback){
 	var messData;
-	console.log("REFERENCE:"+reference);
 	admin.database().ref(reference).once('value').then(function (snapshot) {
 		messData = snapshot.val().status.status;
 		if(messData){
-			console.log(JSON.stringify(messData));
 			callback(messData);
 		}
 		else{
@@ -95,7 +91,6 @@ function saveSubscribedUser(ID, valueToSave) {
 
 function sendSubscriptionStatus(senderID){
 	getSubscribedUser(refPath+'/'+senderID, function(result){
-		console.log(result);
 		if(result=='0'){
 			sendTextMessage(senderID, "You are not in the subscriber list");
 		}
@@ -111,11 +106,10 @@ app.get('/', function (req, res) {
 })
 
 app.get('/sendBreakfast', function(req, res){
-	//sendToApiAi(1103399319763620,"Breakfast");
 	getSubscribedUsers(function(result){
 		result.forEach(element => {
-			if(element.status=='1'){
-				console.log(element.ID);
+			if(element.status.status=='1'){
+				sendToApiAi(element.ID, "Breakfast");
 			}
 		});
 	});
@@ -139,8 +133,6 @@ app.get('/sendDinner', function(req, res){
 
 // for Facebook verification
 app.get('/messengerwebhook/', function (req, res) {
-	console.log("request");
-	console.log(JSON.stringify(req));
 	if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] === config.FB_VERIFY_TOKEN) {
 		res.status(200).send(req.query['hub.challenge']);
 	} else {
