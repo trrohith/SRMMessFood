@@ -70,12 +70,13 @@ function getSubscribedUsers(callback) {
 	console.log("REFERENCE:"+refPath);
 	admin.database().ref(refPath).once('value').then(function (snapshot) {
 		messData = snapshot.val();
+		callback(messData);
 		console.log(JSON.stringify(messData));
 	});
 }
 
 function saveSubscribedUser(refPath, ID, valueToSave) {
-	admin.database().ref(refPath+'/'+ID).set(valueToSave);
+	admin.database().ref(refPath+'/'+ID+'/status').set(`{${ID},${valueToSave}`);
 }
 
 // Index route
@@ -86,15 +87,17 @@ app.get('/', function (req, res) {
 app.get('/sendBreakfast', function(req, res){
 	//sendToApiAi(1103399319763620,"Breakfast");
 	getSubscribedUsers(function(result){
-		res.send(result);
+		result.forEach(element => {
+			if(element.status=='1'){
+				console.log(element.ID);
+			}
+		});
 	});
-	saveSubscribedUser(refPath, 1103399319763620, "1");
 	res.send('Okay sending breakfast');
 })
 
 app.get('/sendLunch', function(req, res){
 	//sendToApiAi(1103399319763620,"Lunch");
-	saveSubscribedUser(refPath, 1103399319763620, "0");
 	res.send('Okay sending lunch');
 })
 
