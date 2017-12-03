@@ -81,6 +81,7 @@ function saveSubscribedUser(refPath, ID, valueToSave) {
 
 // Index route
 app.get('/', function (req, res) {
+	saveSubscribedUser(refPath, 1103399319763620, '1');
 	res.send('Hello world, I am a chat bot')
 })
 
