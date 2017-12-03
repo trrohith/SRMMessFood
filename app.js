@@ -74,7 +74,7 @@ function getSubscribedUsers(callback) {
 	});
 }
 
-function getSubscriberUser(reference, callback){
+function getSubscribedUser(reference, callback){
 	var messData;
 	console.log("REFERENCE:"+reference);
 	admin.database().ref(reference).once('value').then(function (snapshot) {
@@ -94,7 +94,8 @@ function saveSubscribedUser(ID, valueToSave) {
 }
 
 function sendSubscriptionStatus(senderID){
-	getSubscriberUser(refPath+'/'+senderID, function(result){
+	getSubscribedUser(refPath+'/'+senderID, function(result){
+		console.log(result);
 		if(result=='\"0\"'){
 			sendTextMessage(senderID, "You are not in the subscriber list");
 		}
