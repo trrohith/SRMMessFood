@@ -80,7 +80,7 @@ function getSubscribedUser(reference, callback){
 			callback(messData.status.status);
 		}
 		else{
-			return "0";
+			callback("0");
 		}
 	});
 }
