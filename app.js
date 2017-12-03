@@ -113,27 +113,43 @@ app.get('/sendBreakfast', function(req, res){
 				sendToApiAi(key, "Breakfast");
 			}
 		}
-		/*result.forEach(element => {
-			if(element.status.status=='1'){
-				sendToApiAi(element.ID, "Breakfast");
-			}
-		});*/
 	});
 	res.send('Okay sending breakfast');
 })
 
 app.get('/sendLunch', function(req, res){
-	//sendToApiAi(1103399319763620,"Lunch");
+	getSubscribedUsers(function(result){
+		console.log(result);
+		for(var key in result){
+			if(result[key].status.status == '1'){
+				sendToApiAi(key, "Lunch");
+			}
+		}
+	});
 	res.send('Okay sending lunch');
 })
 
 app.get('/sendSnacks', function(req, res){
-	sendToApiAi(1103399319763620,"Snacks");
+	getSubscribedUsers(function(result){
+		console.log(result);
+		for(var key in result){
+			if(result[key].status.status == '1'){
+				sendToApiAi(key, "Snacks");
+			}
+		}
+	});
 	res.send('Okay sending snacks');
 })
 
 app.get('/sendDinner', function(req, res){
-	sendToApiAi(1103399319763620,"Dinner");
+	getSubscribedUsers(function(result){
+		console.log(result);
+		for(var key in result){
+			if(result[key].status.status == '1'){
+				sendToApiAi(key, "Dinner");
+			}
+		}
+	});
 	res.send('Okay sending dinner');
 })
 
