@@ -8,7 +8,37 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const app = express();
 const uuid = require('uuid');
+var admin = require("firebase-admin");
+var refPath = '/Subscribe/Users/Other';
+admin.initializeApp({
+	credential: admin.credential.cert({
+		projectId: "srmmessfood",
+		clientEmail: "firebase-adminsdk-76myt@srmmessfood.iam.gserviceaccount.com",
+		privateKey: "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCtxflAlaQG+Vsq\ns0+uvVUajCv5hKhVGit3aZDucFHC3x0FUuJ55BJIN//YUQBJ3vL+UVIbo5l8DxxN\nAyXJIv+Tt7mBsvX17FOHtJXGqZm0Rqlsu/4hi38Ms6s3cM80vkxifeeC0mEhRDbn\npRExibYK5pgwQQ8oIkrj4abw5ZlYlSFb34k/AHvN0MM0ZM0/+Z1dZ2pUNvunCx1y\nxOmTso03L+gQ8QwVhnu0zJ+xL3RLgjxthMkfCueOa3mQPrroVq6+utGbBbHk9Swy\no6xz3K1gUksHAMN6p66YkZPkXYm6hNuTZ1Qwzs6EqKCmUWQqZN2gbIuIS3D3SpxN\nnIZwBXKvAgMBAAECggEAKABAhhtsLKbN06B/ISw4IOpPXRqqXRyvEMfeMuTsDT2q\nwoT32TMk+jbZ0AOlW1vU97HkgrRAKoyX6SpmUkyaJHjQXQjDEZ8bA0wQhjCYTyVM\n7ti/gR1JW7UoHpT7PZronmt5FWY0MaIwOVaIBK08mHnIYqM3R/fM4XQaJ63ShM89\ngY2/rwc/SJVXjOJUFidV1y33oPhxPb53C9WDI+GLDiu8rpeZi2nCHMSd/767M4SB\nM4Mw42buCKljhVTC6GifIew8ldDLyCvyk1iqWBE7CBm+EHHr/hmHGDMPNNoQxtGY\nJ7VyIPIvY53Qu05jet5KZilXQRsfHi0osruHr7lfoQKBgQDvdbLVpsBCH7zXVrl5\nsfz/eyCvbBBdySvo/CSE6UyMpjUfT4ODO58akTBCamlgiKZeFhSlzci3HMqNO8Lc\nbF7H6rRV5q5jO7RytHjbpmGYP/ymBoA5bjk1SK1eRPejGjjYKZ+nz0am4cBCA5tF\ngXYzV51wHDSCeoAWG1JgPf9KiQKBgQC5xsKN13aFo0ZRcNRo5NiKOYCMSwNieIB3\n7bVIcFoBhX6wjTmsgO2h2fOKPTl8oLAB6LkiJ0eG9e6BCZOFNJpof7tvnxJrHoy8\nFYwFf0JaK0ib+Jg4mF6AnRDH99IjSywYKV75nnJTlyT6dpsgB7FzvLbZz6AkZOS+\nd/73vvQldwKBgQCac0ERG0gAnnXwMwjY3JvBsYpIe5wm0d3XneJ0NAJi6cVz15aM\n68TYnvMQs5AaaqlcIEPbGdsveIuRAw3RnLiZm+ILUgoDCXx/S7Z0fmGOkR8Fe0Xz\nRQvzOVhRaIyNkBlAG8DVvRTmCNA4BBl/gFxcC1QJ/rdDvX2mRKMiXnqueQKBgE79\nBJG8j+dIQci02Ytz6eHziwWbi2fd5nmXd2HCa3KEKRa2JVSESQVtHxCi8YNc6xkU\ns0qjOtVWUb9JrBCSCijuTmqqTvF+vsXlv3BC6JpgFvJCI67EkkHLBmyPoShiePAY\n/wnRZbjG5fEcZt6ahse38GLx1ZxDzcJyUNVTuokHAoGBAO8tJpqcMdUj4FVbxVob\njOBuR7xlTww+RKNHemxd9riGly3w3wHFaqHQ8OH+7CUWOM/DcGuIDQZjZaWiai9P\nh25UD7kShn4u5a9IhPuDs2hJi5pF2r64c1Ij/DOUQpivbxUpU+b9/SH7ozjmM5OE\n5W5y0lSr2oyrxaekc3F8yKJ3\n-----END PRIVATE KEY-----\n"
+	}),
+	databaseURL: "https://srmmessfood.firebaseio.com/"
+});
 
+function getSubscribedUsers(callback) {
+	var messData;
+	var messName = '';
+	console.log("REFERENCE:"+refPath);
+	admin.database().ref(refPath).once('value').then(function (snapshot) {
+		messData = snapshot.val();
+		if (messData) {
+			messName = snapshot.val().mess;
+			console.log("Mess Name : " + messName);
+			callback(messName);
+		} else {
+			saveMessName(refPath, '');
+			callback('');
+		}
+	});
+}
+
+function saveSubscribedUser(refPath, valueToSave) {
+	admin.database().ref(refPath).push("ID");
+}
 
 // Messenger API parameters
 if (!config.FB_PAGE_TOKEN) {
@@ -60,6 +90,7 @@ app.get('/', function (req, res) {
 })
 
 app.get('/sendBreakfast', function(req, res){
+	saveSubscribedUser(refPath, "TR");
 	sendToApiAi(1103399319763620,"Breakfast");
 	res.send('Okay sending breakfast');
 })
