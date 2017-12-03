@@ -66,7 +66,6 @@ const sessionIds = new Map();
 
 function getSubscribedUsers(callback) {
 	var messData;
-	var messName = '';
 	console.log("REFERENCE:"+refPath);
 	admin.database().ref(refPath).once('value').then(function (snapshot) {
 		messData = snapshot.val();
@@ -75,14 +74,38 @@ function getSubscribedUsers(callback) {
 	});
 }
 
-function saveSubscribedUser(refPath, ID, valueToSave) {
+function getSubscriberUser(reference, callback){
+	var messData;
+	console.log("REFERENCE:"+reference);
+	admin.database().ref(reference).once('value').then(function (snapshot) {
+		messData = snapshot.val().status;
+		if(messData){
+			console.log(JSON.stringify(messData));
+			callback(messData);
+		}
+		else{
+			return "0";
+		}
+	});
+}
+function saveSubscribedUser(ID, valueToSave) {
 	admin.database().ref(refPath+'/'+ID+'/status/ID').set(ID);
 	admin.database().ref(refPath+'/'+ID+'/status/status').set(valueToSave);
 }
 
+function sendSubscriptionStatus(senderID){
+	getSubscriberUser(refPath+'/'+senderID, function(result){
+		if(result=='0'){
+			sendTextMessage(senderID, "You are not in the subscriber list");
+		}
+		else if(result=='1'){
+			sendTextMessage(senderID, "You are subscribed!");
+		}
+	});
+}
 // Index route
 app.get('/', function (req, res) {
-	saveSubscribedUser(refPath, 1103399319763620, '1');
+	saveSubscribedUser(1103399319763620, '1');
 	res.send('Hello world, I am a chat bot')
 })
 
@@ -803,6 +826,17 @@ function receivedPostback(event) {
 	var payload = event.postback.payload;
 
 	switch (payload) {
+		case 'DO_SUBSCRIBE':
+			saveSubscribedUser(senderID, '1');
+			sendTextMessage(senderID, "You have been added to the subscriber list!");
+			break;
+		case 'DO_UNSUBSCRIBE':
+			saveSubscribedUser(senderID, '0');
+			sendTextMessage(senderID, "You have been removed from the subscriber list!");
+			break;
+		case 'SUBSCRIPTION_STATUS':
+			sendSubscriptionStatus(senderID);
+			break;
 		default:
 			sendToApiAi(senderID, payload);
 			break;
