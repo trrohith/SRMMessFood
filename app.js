@@ -107,7 +107,6 @@ app.get('/', function (req, res) {
 
 app.get('/sendBreakfast', function(req, res){
 	getSubscribedUsers(function(result){
-		console.log(result);
 		for(var key in result){
 			if(result[key].status.status == '1'){
 				sendToApiAi(key, "Breakfast");
@@ -119,7 +118,6 @@ app.get('/sendBreakfast', function(req, res){
 
 app.get('/sendLunch', function(req, res){
 	getSubscribedUsers(function(result){
-		console.log(result);
 		for(var key in result){
 			if(result[key].status.status == '1'){
 				sendToApiAi(key, "Lunch");
@@ -131,7 +129,6 @@ app.get('/sendLunch', function(req, res){
 
 app.get('/sendSnacks', function(req, res){
 	getSubscribedUsers(function(result){
-		console.log(result);
 		for(var key in result){
 			if(result[key].status.status == '1'){
 				sendToApiAi(key, "Snacks");
@@ -143,7 +140,6 @@ app.get('/sendSnacks', function(req, res){
 
 app.get('/sendDinner', function(req, res){
 	getSubscribedUsers(function(result){
-		console.log(result);
 		for(var key in result){
 			if(result[key].status.status == '1'){
 				sendToApiAi(key, "Dinner");
