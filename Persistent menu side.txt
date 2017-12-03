@@ -2,7 +2,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "persistent_menu":[{
       "locale":"default",
     "call_to_actions":[
-      {        
+        {        
         "type":"postback",
         "title":"Today Menu",      
         "payload":"Today"        
@@ -11,7 +11,29 @@ curl -X POST -H "Content-Type: application/json" -d '{
         "type":"postback",
         "title":"Change preferred mess",
         "payload":"change my preferred mess"
+      },
+      {
+        "title":"Subscriptions",
+        "type":"nested",
+        "call_to_actions":[
+          {
+            "title":"Subscribe to events",
+            "type":"postback",
+            "payload":"DO_SUBSCRIBE"
+          },
+          {
+            "title":"Unsubscribe to events",
+            "type":"postback",
+            "payload":"DO_UNSUBSCRIBE"
+          },
+          {
+            "title":"Current Status",
+            "type":"postback",
+            "payload":"SUBSCRIPTION_STATUS"
+          }
+        ]
       }
     ]
-  }]
+  }
+  ]
 }' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAAEs1AmyFy4BALDN0i5pFZCyZAIGxLJqYA0Sugizi1yN6BeikuogpDL2F3faKrotFKg9UbKNVrdpiA0h6dtMRS0FDZByYQvL6ZA8EAYNS28tIT4ARBVoBVITAHDcyCRhq3c55zIQhcqEuIu0RKyfqYl1IrBQr3MYtJfKlIApiAZDZD"

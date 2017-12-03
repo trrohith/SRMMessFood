@@ -59,6 +59,26 @@ app.get('/', function (req, res) {
 	res.send('Hello world, I am a chat bot')
 })
 
+app.get('/sendBreakfast', function(req, res){
+	sendToApiAi(1103399319763620,"Breakfast");
+	res.send('Okay sending breakfast');
+})
+
+app.get('/sendLunch', function(req, res){
+	sendToApiAi(1103399319763620,"Lunch");
+	res.send('Okay sending lunch');
+})
+
+app.get('/sendSnacks', function(req, res){
+	sendToApiAi(1103399319763620,"Snacks");
+	res.send('Okay sending snacks');
+})
+
+app.get('/sendDinner', function(req, res){
+	sendToApiAi(1103399319763620,"Dinner");
+	res.send('Okay sending dinner');
+})
+
 // for Facebook verification
 app.get('/messengerwebhook/', function (req, res) {
 	console.log("request");
