@@ -70,13 +70,13 @@ function getSubscribedUsers(callback) {
 	console.log("REFERENCE:"+refPath);
 	admin.database().ref(refPath).once('value').then(function (snapshot) {
 		messData = snapshot.val();
-		callback(messData);
 		console.log(JSON.stringify(messData));
+		callback(messData);
 	});
 }
 
 function saveSubscribedUser(refPath, ID, valueToSave) {
-	admin.database().ref(refPath+'/'+ID+'/status').set(`{${ID},${valueToSave}}`);
+	admin.database().ref(refPath+'/'+ID+'/status').set(`{"ID":${ID},"status":${valueToSave}}`);
 }
 
 // Index route
