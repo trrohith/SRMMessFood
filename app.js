@@ -96,11 +96,11 @@ function saveSubscribedUser(ID, valueToSave) {
 function sendSubscriptionStatus(senderID){
 	getSubscribedUser(refPath+'/'+senderID, function(result){
 		console.log(result);
-		if(result=='\"0\"'){
+		if(result=='0'){
 			sendTextMessage(senderID, "You are not in the subscriber list");
 		}
-		else if(result=='\"1\"'){
-			sendTextMessage(senderID, "You are subscribed!");
+		else if(result=='1'){
+			sendTextMessage(senderID, "You are in the subscriber list!");
 		}
 	});
 }
