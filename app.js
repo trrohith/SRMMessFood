@@ -66,7 +66,7 @@ const sessionIds = new Map();
 
 function getSubscribedUsers(callback) {
 	var messData;
-	con.query(`SELECT ID,subscribe FROM users WHERE ID = ${ID}`, function (err, result, fields) {
+	con.query(`SELECT ID,subscribe FROM users WHERE subscribe=1`, function (err, result, fields) {
 		if (err) throw err;
 		console.log(result);
 		callback("0");
