@@ -361,7 +361,7 @@ function handleApiAiResponse(sender, response) {
 	let parameters = response.result.parameters;
 	var quickReply = true;
 	var listReply = true;
-	console.log(messages.data.google);
+	console.log(messages.data.google.system_intent.spec.option_value_spec);
 	try {
 		messages = messages.data.google.rich_response.suggestions;
 	} catch (e) {
