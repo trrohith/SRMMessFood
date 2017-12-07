@@ -133,7 +133,7 @@ app.get('/sendBreakfast', function(req, res){
 	getSubscribedUsers(function(result){
 		console.log(result);
 		for(var key in result){
-			console.log(key);
+			console.log(result[key].ID);
 			//sendToApiAi(key, "Breakfast");
 		}
 	});
