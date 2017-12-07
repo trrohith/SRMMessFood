@@ -88,6 +88,12 @@ function saveSubscribedUser(ID, valueToSave) {
 	con.query(`SELECT * FROM users WHERE ID = ${ID}`, function (err, result, fields) {
 		if (err) throw err;
 		console.log(result);
+		if(result<1){
+			con.query(`INSERT INTO users (ID,subscribe) VALUES(${ID},${valueToSave})`, function (err, result) {
+				if (err) throw err;
+				console.log(result);
+			});
+		}
 	  });
 	/*admin.database().ref(refPath+'/'+ID+'/status/ID').set(ID);
 	admin.database().ref(refPath+'/'+ID+'/status/status').set(valueToSave);*/
