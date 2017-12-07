@@ -131,8 +131,10 @@ app.get('/', function (req, res) {
 
 app.get('/sendBreakfast', function(req, res){
 	getSubscribedUsers(function(result){
+		console.log(result);
 		for(var key in result){
-			sendToApiAi(key, "Breakfast");
+			console.log(key);
+			//sendToApiAi(key, "Breakfast");
 		}
 	});
 	res.send('Okay sending breakfast');
