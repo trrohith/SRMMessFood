@@ -85,7 +85,7 @@ function getSubscribedUser(reference, callback){
 	});*/
 }
 function saveSubscribedUser(ID, valueToSave) {
-	var sql = `INSERT INTO users (ID, subscribe) VALUES (${ID},${valueToSave})`;
+	var sql = `REPLACE INTO users (ID, subscribe) VALUES (${ID},${valueToSave})`;
 	con.query(sql, function (err, result) {
 	  if (err) throw err;
 	  console.log(sql);
