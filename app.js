@@ -405,7 +405,7 @@ function handleApiAiResponse(sender, response) {
 			replies.push(reply);
 		});
 		sendTextMessage(sender, response.result.fulfillment.speech);
-		sendListMessage(sender, replies);
+		sendCarouselMessage(sender, replies);
 	}
 	else if (responseText == '' && !isDefined(action)) {
 		//api ai could not evaluate input.
@@ -614,6 +614,24 @@ function sendGenericMessage(recipientId, elements) {
 	callSendAPI(messageData);
 }
 
+function sendCarouselMessage(recipientId, elements){
+	var messageData = {
+		recipient: {
+			id: recipientId
+		},
+		message: {
+			attachment: {
+				payload: {
+					"template_type": "generic",
+					"elements": elements
+				}
+			}
+		}
+	};
+
+	callSendAPI(messageData);
+}
+
 function sendListMessage(recipientId, elements) {
 	var messageData = {
 		recipient: {
@@ -623,7 +641,7 @@ function sendListMessage(recipientId, elements) {
 			attachment: {
 				type: "template",
 				payload: {
-					"template_type": "generic",
+					"template_type": "list",
 					"top_element_style": "compact",
 					"elements": elements
 				}
