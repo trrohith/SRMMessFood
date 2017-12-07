@@ -12,7 +12,8 @@ var mysql = require('mysql');
 var con = mysql.createConnection({
 	host: "trrohith.ddns.net",
 	user: "srmmessfood",
-	password: "srmmess"
+	password: "srmmess",
+	database: "srmmessfood"
   });
   
   con.connect(function(err) {
