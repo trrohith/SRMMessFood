@@ -79,10 +79,10 @@ function getSubscribedUsers(callback) {
 
 function getSubscribedUser(reference, callback){
 	var messData;
-	con.query(`SELECT ID,subscribe FROM users WHERE ID = ${ID}`, function (err, result, fields) {
+	con.query(`SELECT ID FROM users WHERE ID = ${ID}`, function (err, result, fields) {
 		if (err) throw err;
 		console.log(result);
-		callback("0");
+		callback(result);
 	  });
 	/*admin.database().ref(reference).once('value').then(function (snapshot) {
 		messData = snapshot.val();
