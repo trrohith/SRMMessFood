@@ -361,7 +361,6 @@ function handleApiAiResponse(sender, response) {
 	let parameters = response.result.parameters;
 	var quickReply = true;
 	var listReply = true;
-	console.log(messages.data.google.system_intent.spec.option_value_spec.carousel_select);
 	try {
 		messages = messages.data.google.rich_response.suggestions;
 	} catch (e) {
@@ -370,11 +369,17 @@ function handleApiAiResponse(sender, response) {
 	}
 	try {
 		messages = messages.data.google.system_intent.spec.option_value_spec.list_select.items;
-		messages = messages.data.google.system_intent.spec.option_value_spec.list_select;
 	}
 	catch (e) {
 		console.log("NO list reply");
 		listReply = false;
+	}
+	try{
+		messages = messages.data.google.system_intent.spec.option_value_spec.carousel_select.items;
+		listReply = true;
+	}
+	catch (e){
+		console.log("NO carousel reply");
 	}
 	sendTypingOff(sender);
 
@@ -394,7 +399,7 @@ function handleApiAiResponse(sender, response) {
 	else if (listReply) {
 		let replies = [];
 		console.log(messages);
-		messages.items.forEach(element => {
+		messages.forEach(element => {
 			let reply = {
 				"title": element.title,
 				"subtitle": element.description,
