@@ -73,12 +73,17 @@ function getSubscribedUsers(callback) {
 	  });
 }
 
-function getSubscribedUser(reference, callback){
+function getSubscribedUser(ID, callback){
 	var messData;
-	con.query(`SELECT ID,subscribe FROM users WHERE ID = ${ID}`, function (err, result, fields) {
+	con.query(`SELECT subscribe FROM users WHERE ID = ${ID}`, function (err, result, fields) {
 		if (err) throw err;
 		console.log(result);
-		callback(result);
+		if(result<1){
+			callback("0");
+		}
+		else{
+			callback(result[0].subscribe);
+		}
 	  });
 }
 function saveSubscribedUser(ID, valueToSave) {
@@ -101,7 +106,7 @@ function saveSubscribedUser(ID, valueToSave) {
 }
 
 function sendSubscriptionStatus(senderID){
-	getSubscribedUser(refPath+'/'+senderID, function(result){
+	getSubscribedUser(senderID, function(result){
 		if(result=='0'){
 			sendTextMessage(senderID, "You are not in the subscriber list");
 		}
