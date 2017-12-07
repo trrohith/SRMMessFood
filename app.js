@@ -361,6 +361,7 @@ function handleApiAiResponse(sender, response) {
 	let parameters = response.result.parameters;
 	var quickReply = true;
 	var listReply = true;
+	console.log(messages.data.google);
 	try {
 		messages = messages.data.google.rich_response.suggestions;
 	} catch (e) {
@@ -391,6 +392,7 @@ function handleApiAiResponse(sender, response) {
 	}
 	else if (listReply) {
 		let replies = [];
+		console.log(messages);
 		messages.items.forEach(element => {
 			let reply = {
 				"title": element.title,
