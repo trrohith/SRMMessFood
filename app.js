@@ -405,7 +405,12 @@ function handleApiAiResponse(sender, response) {
 			replies.push(reply);
 		});
 		sendTextMessage(sender, response.result.fulfillment.speech);
-		sendCarouselMessage(sender, replies);
+		if(replies.length>4){
+			sendCarouselMessage(sender, replies);
+		}
+		else{
+			sendListMessage(sender, replies);
+		}
 	}
 	else if (responseText == '' && !isDefined(action)) {
 		//api ai could not evaluate input.
