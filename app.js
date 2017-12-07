@@ -66,6 +66,11 @@ const sessionIds = new Map();
 
 function getSubscribedUsers(callback) {
 	var messData;
+	con.query(`SELECT ID,subscribe FROM users WHERE ID = ${ID}`, function (err, result, fields) {
+		if (err) throw err;
+		console.log(result);
+		callback("0");
+	  });
 	/*admin.database().ref(refPath).once('value').then(function (snapshot) {
 		messData = snapshot.val();
 		callback(messData);
