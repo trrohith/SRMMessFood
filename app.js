@@ -398,7 +398,6 @@ function handleApiAiResponse(sender, response) {
 	}
 	else if (listReply) {
 		let replies = [];
-		console.log(messages);
 		messages.forEach(element => {
 			let reply = {
 				"title": element.title,
