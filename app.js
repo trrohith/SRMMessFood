@@ -84,6 +84,11 @@ function getSubscribedUser(reference, callback){
 	});*/
 }
 function saveSubscribedUser(ID, valueToSave) {
+	var sql = `INSERT INTO users (ID, subscribe) VALUES (${ID},${valueToSave})`;
+	con.query(sql, function (err, result) {
+	  if (err) throw err;
+	  console.log(sql);
+	});
 	/*admin.database().ref(refPath+'/'+ID+'/status/ID').set(ID);
 	admin.database().ref(refPath+'/'+ID+'/status/status').set(valueToSave);*/
 }
