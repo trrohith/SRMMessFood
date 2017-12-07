@@ -361,7 +361,7 @@ function handleApiAiResponse(sender, response) {
 	let parameters = response.result.parameters;
 	var quickReply = true;
 	var listReply = true;
-	console.log(messages.data.google.system_intent.spec.option_value_spec);
+	console.log(messages.data.google.system_intent.spec.option_value_spec.carousel_select);
 	try {
 		messages = messages.data.google.rich_response.suggestions;
 	} catch (e) {
@@ -369,6 +369,7 @@ function handleApiAiResponse(sender, response) {
 		quickReply = false;
 	}
 	try {
+		messages = messages.data.google.system_intent.spec.option_value_spec.list_select.items;
 		messages = messages.data.google.system_intent.spec.option_value_spec.list_select;
 	}
 	catch (e) {
