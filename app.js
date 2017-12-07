@@ -74,6 +74,11 @@ function getSubscribedUsers(callback) {
 
 function getSubscribedUser(reference, callback){
 	var messData;
+	con.query(`SELECT ID,subscribe FROM users WHERE ID = ${ID}`, function (err, result, fields) {
+		if (err) throw err;
+		console.log(result);
+		callback("0");
+	  });
 	/*admin.database().ref(reference).once('value').then(function (snapshot) {
 		messData = snapshot.val();
 		if(messData){
@@ -101,8 +106,6 @@ function saveSubscribedUser(ID, valueToSave) {
 			});
 		}
 	  });
-	/*admin.database().ref(refPath+'/'+ID+'/status/ID').set(ID);
-	admin.database().ref(refPath+'/'+ID+'/status/status').set(valueToSave);*/
 }
 
 function sendSubscriptionStatus(senderID){
