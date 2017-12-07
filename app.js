@@ -65,7 +65,6 @@ const apiAiService = apiai(config.API_AI_CLIENT_ACCESS_TOKEN, {
 const sessionIds = new Map();
 
 function getSubscribedUsers(callback) {
-	var messData;
 	con.query(`SELECT ID FROM users WHERE subscribe=1`, function (err, result, fields) {
 		if (err) throw err;
 		console.log(result);
@@ -624,7 +623,7 @@ function sendListMessage(recipientId, elements) {
 			attachment: {
 				type: "template",
 				payload: {
-					"template_type": "list",
+					"template_type": "generic",
 					"top_element_style": "compact",
 					"elements": elements
 				}
