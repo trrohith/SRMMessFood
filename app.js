@@ -94,6 +94,12 @@ function saveSubscribedUser(ID, valueToSave) {
 				console.log(result);
 			});
 		}
+		else{
+			con.query(`UPDATE users SET subscribe = ${valueToSave} WHERE ID = ${ID}`, function (err, result) {
+				if (err) throw err;
+				console.log(result);
+			});
+		}
 	  });
 	/*admin.database().ref(refPath+'/'+ID+'/status/ID').set(ID);
 	admin.database().ref(refPath+'/'+ID+'/status/status').set(valueToSave);*/
