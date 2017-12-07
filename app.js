@@ -71,28 +71,15 @@ function getSubscribedUsers(callback) {
 		console.log(result);
 		callback(result);
 	  });
-	/*admin.database().ref(refPath).once('value').then(function (snapshot) {
-		messData = snapshot.val();
-		callback(messData);
-	});*/
 }
 
 function getSubscribedUser(reference, callback){
 	var messData;
-	con.query(`SELECT ID FROM users WHERE ID = ${ID}`, function (err, result, fields) {
+	con.query(`SELECT ID,subscribe FROM users WHERE ID = ${ID}`, function (err, result, fields) {
 		if (err) throw err;
 		console.log(result);
 		callback(result);
 	  });
-	/*admin.database().ref(reference).once('value').then(function (snapshot) {
-		messData = snapshot.val();
-		if(messData){
-			callback(messData.status.status);
-		}
-		else{
-			callback("0");
-		}
-	});*/
 }
 function saveSubscribedUser(ID, valueToSave) {
 	con.query(`SELECT * FROM users WHERE ID = ${ID}`, function (err, result, fields) {
@@ -125,16 +112,13 @@ function sendSubscriptionStatus(senderID){
 }
 // Index route
 app.get('/', function (req, res) {
-	saveSubscribedUser(1103399319763620, '1');
 	res.send('Hello world, I am a chat bot')
 })
 
 app.get('/sendBreakfast', function(req, res){
 	getSubscribedUsers(function(result){
-		console.log(result);
 		for(var key in result){
-			console.log(result[key].ID);
-			//sendToApiAi(key, "Breakfast");
+			sendToApiAi(result[key].ID, "Breakfast");
 		}
 	});
 	res.send('Okay sending breakfast');
@@ -143,9 +127,7 @@ app.get('/sendBreakfast', function(req, res){
 app.get('/sendLunch', function(req, res){
 	getSubscribedUsers(function(result){
 		for(var key in result){
-			if(result[key].status.status == '1'){
-				sendToApiAi(key, "Lunch");
-			}
+			sendToApiAi(result[key].ID, "Lunch");
 		}
 	});
 	res.send('Okay sending lunch');
@@ -154,9 +136,7 @@ app.get('/sendLunch', function(req, res){
 app.get('/sendSnacks', function(req, res){
 	getSubscribedUsers(function(result){
 		for(var key in result){
-			if(result[key].status.status == '1'){
-				sendToApiAi(key, "Snacks");
-			}
+			sendToApiAi(result[key].ID, "Snacks");
 		}
 	});
 	res.send('Okay sending snacks');
@@ -165,9 +145,7 @@ app.get('/sendSnacks', function(req, res){
 app.get('/sendDinner', function(req, res){
 	getSubscribedUsers(function(result){
 		for(var key in result){
-			if(result[key].status.status == '1'){
-				sendToApiAi(key, "Dinner");
-			}
+			sendToApiAi(result[key].ID, "Dinner");
 		}
 	});
 	res.send('Okay sending dinner');
