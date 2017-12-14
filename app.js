@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const app = express();
 const uuid = require('uuid');
+var messNamesArray = [];
 var mysql = require('mysql');
 var con = mysql.createConnection({
 	host: "trrohith.ddns.net",
@@ -84,6 +85,36 @@ function getSubscribedUser(ID, callback){
 			callback(result[0].subscribe);
 		}
 	  });
+}
+function loadMessArray(callback) {
+	con.query(`SELECT name FROM mess`, function (err, result, fields) {
+		if (err) throw err;
+		for (var key in result) {
+			messNamesArray.push(result[key].name);
+		}
+		callback(result);
+	});
+}
+function validMess(searchStr, callback) {
+	if (messNamesArray.length < 2) {
+		loadMessArray(function (returnValue) {
+			callback(messNamesArray.indexOf(searchStr) > -1)
+		});
+	}
+	else {
+		callback(messNamesArray.indexOf(searchStr) > -1)
+	}
+}
+function getMessName(callback) {
+	con.query(`SELECT * FROM users WHERE ID = '${userID}'`, function (err, result, fields) {
+		if (err) throw err;
+		if (result < 1) {
+			callback('empty');
+		}
+		else {
+			callback(result[0].mess);
+		}
+	});
 }
 function saveSubscribedUser(ID, valueToSave) {
 	con.query(`SELECT * FROM users WHERE ID = ${ID}`, function (err, result, fields) {
@@ -875,8 +906,17 @@ function receivedPostback(event) {
 
 	switch (payload) {
 		case 'DO_SUBSCRIBE':
-			saveSubscribedUser(senderID, '1');
-			sendTextMessage(senderID, "You have been added to the subscriber list!");
+			getMessName(function(resultMess){
+				validMess(resultMess, function(messValid){
+					if(messValid){
+						saveSubscribedUser(senderID, '1');
+						sendTextMessage(senderID, "You have been added to the subscriber list!");
+					}
+					else{
+						sendTextMessage(senderID, "Sorry, please change your preferred mess first");
+					}
+				})
+			})
 			break;
 		case 'DO_UNSUBSCRIBE':
 			saveSubscribedUser(senderID, '0');
