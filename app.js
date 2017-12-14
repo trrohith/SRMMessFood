@@ -105,7 +105,7 @@ function validMess(searchStr, callback) {
 		callback(messNamesArray.indexOf(searchStr) > -1)
 	}
 }
-function getMessName(callback) {
+function getMessName(userID, callback) {
 	con.query(`SELECT * FROM users WHERE ID = '${userID}'`, function (err, result, fields) {
 		if (err) throw err;
 		if (result < 1) {
@@ -906,7 +906,7 @@ function receivedPostback(event) {
 
 	switch (payload) {
 		case 'DO_SUBSCRIBE':
-			getMessName(function(resultMess){
+			getMessName(senderID, function(resultMess){
 				validMess(resultMess, function(messValid){
 					if(messValid){
 						saveSubscribedUser(senderID, '1');
