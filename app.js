@@ -925,6 +925,10 @@ function receivedPostback(event) {
 		case 'SUBSCRIPTION_STATUS':
 			sendSubscriptionStatus(senderID);
 			break;
+		case 'FACEBOOK_WELCOME':
+			sendTextMessage(senderID, "Greetings!");
+			sendToApiAi(senderID, "Help");
+			break;
 		default:
 			sendToApiAi(senderID, payload);
 			break;
