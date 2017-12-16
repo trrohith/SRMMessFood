@@ -11,10 +11,10 @@ const uuid = require('uuid');
 var messNamesArray = [];
 var mysql = require('mysql');
 var con = mysql.createConnection({
-	host: "localhost",
+	host: "pma.webarchsrm.com",
 	user: "srmmess",
 	password: "srmmess#2018",
-	database: "srmmessfood"
+	database: "srmmess"
   });
   
   con.connect(function(err) {
