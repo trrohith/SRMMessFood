@@ -11,7 +11,7 @@ const uuid = require('uuid');
 var messNamesArray = [];
 var mysql = require('mysql');
 var con = mysql.createConnection({
-	host: "pma.webarchsrm.com",
+	host: "webarchsrm.com",
 	user: "srmmess",
 	password: "srmmess#2018",
 	database: "srmmess"
